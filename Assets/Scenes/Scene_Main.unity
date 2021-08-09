@@ -493,6 +493,7 @@ MonoBehaviour:
   - {fileID: 1436759571}
   - {fileID: 303613258}
   _moveSpeed: 10
+  gameManager: {fileID: 0}
 --- !u!82 &259959754
 AudioSource:
   m_ObjectHideFlags: 0
@@ -776,7 +777,7 @@ Animator:
   m_GameObject: {fileID: 491729821}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0b1bb31b9e6e7b44bbe1e1e410639dea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1412,7 +1413,7 @@ Animator:
   m_GameObject: {fileID: 2098452865}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b8104ad448d894d4d9ef8adc1c7ceb3c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1461,7 +1462,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ad6219dc9bc0d5647bd900fe03049028, type: 3}
+  m_Sprite: {fileID: 4873819119957979580, guid: c4f77530b8163614684e3c1a2e1aa06f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

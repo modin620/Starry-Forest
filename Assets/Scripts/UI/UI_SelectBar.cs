@@ -16,6 +16,7 @@ public class UI_SelectBar : MonoBehaviour
     private bool _onMove;
     private bool _onUp;
     private bool _onDown;
+    private bool _onEnter;
     private bool _moveCooltime;
 
     private const int SELECT_FONT_SIZE = 50;
@@ -30,6 +31,7 @@ public class UI_SelectBar : MonoBehaviour
     private void Update()
     {
         GetInput();
+        Select();
         CheckDirection();
         MoveBar();
     }
@@ -38,12 +40,31 @@ public class UI_SelectBar : MonoBehaviour
     {
         _onUp = Input.GetButton("Up");
         _onDown = Input.GetButton("Down");
+        _onEnter = Input.GetKeyDown(KeyCode.Return);
 
         if ((_onUp || _onDown) && !_moveCooltime)
         {
             _moveCooltime = true;
             _audioSource.Play();
             Invoke("WaitMove", 0.5f);
+        }
+
+    }
+
+    private void Select()
+    {
+        if (!_onEnter)
+            return;
+
+        switch (_preIndex)
+        {
+            case 0:
+                LoadingSceneController.LoadScene("Scene_Stage_1");
+                break;
+            case 1:
+            case 2:
+            case 3:
+                break;
         }
     }
 
