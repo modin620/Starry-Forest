@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c843a6c331e6031419e35dd2f02e793f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 1
   _blinkLevel: 0.4
   _blinkSpeed: 0.5
 --- !u!1 &179105407
@@ -493,7 +494,6 @@ MonoBehaviour:
   - {fileID: 1436759571}
   - {fileID: 303613258}
   _moveSpeed: 10
-  gameManager: {fileID: 0}
 --- !u!82 &259959754
 AudioSource:
   m_ObjectHideFlags: 0
