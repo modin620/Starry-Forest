@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource audioSource;
 
     private bool _ground;
+    private bool _onJump;
     private float _dashValue;
 
     private void Start()
@@ -44,10 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!audioSource.isPlaying && _ground)
             {
-                if (_dashValue > 1.0f)
-                    AudioPlay("dash");
-                else
-                    AudioPlay("walk");
+                AudioPlay("walk");
             }
 
             animator.SetBool("onWalk", true);
@@ -67,8 +65,9 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && _ground && !_onJump)
         {
+            _onJump = true;
             animator.SetTrigger("onJump");
             audioSource.Stop();
             AudioPlay("jump");
@@ -91,8 +90,13 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Platform")
+        {
             _ground = true;
+            _onJump = false;
+        }
         else
+        {
             _ground = false;
+        }
     }
 }

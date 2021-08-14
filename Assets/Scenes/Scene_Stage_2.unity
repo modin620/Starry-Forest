@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 610369558}
   m_Layer: 0
   m_Name: Object_Stone
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
