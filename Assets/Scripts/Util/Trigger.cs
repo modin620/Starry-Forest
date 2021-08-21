@@ -24,6 +24,9 @@ public class Trigger : MonoBehaviour
                         _nestedCheck = true;
                     }
                     break;
+                case 1:
+                    LoadingSceneController.LoadScene("Scene_Stage_2");
+                    break;
             }
         }
     }
