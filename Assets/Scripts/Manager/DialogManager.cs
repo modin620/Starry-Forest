@@ -55,7 +55,7 @@ public class DialogManager : MonoBehaviour
             {
                 _printed[0] = false;
                 _dialog.SetActive(false);
-                playerController.OnDialog = false;
+                Invoke("ControllerOn", 0.5f);
             }
 
             if (_printed[1])
@@ -107,5 +107,10 @@ public class DialogManager : MonoBehaviour
         audioSource.Stop();
         _arrow.enabled = true;
         _printed[nextNumber] = true;
+    }
+
+    private void ControllerOn()
+    {
+        playerController.OnDialog = false;
     }
 }

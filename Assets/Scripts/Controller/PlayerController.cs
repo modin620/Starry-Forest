@@ -41,10 +41,17 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (OnDialog)
-            return;
-
         float horizontal = Input.GetAxis("Horizontal");
+
+        if (OnDialog)
+        {
+            animator.SetBool("onWalk", false);
+            audioSource.Stop();
+            horizontal = 0.0f;
+            var main = _dustEffect.main;
+            main.startSize = 0.0f;
+            return;
+        }
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -52,7 +59,7 @@ public class PlayerController : MonoBehaviour
             {
                 _dashValue = 1.25f;
                 var main = _dustEffect.main;
-                main.startSize = 0.8f;
+                main.startSize = 0.6f;
             }
         }
         else
