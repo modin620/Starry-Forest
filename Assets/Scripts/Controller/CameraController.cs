@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform _target;
-    [SerializeField] private float moveValue;
+    [SerializeField] private float _moveValue;
 
     private void Update()
     {
@@ -15,6 +15,6 @@ public class CameraController : MonoBehaviour
     private void Move()
     {
         Vector3 moveVector = new Vector3(_target.position.x, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, moveVector, moveValue * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, moveVector, _moveValue * Time.deltaTime);
     }
 }

@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Scene_Loading.unity
     guid: 5300f46e546abf446861ba39aa32a145
   - enabled: 1
-    path: Assets/Scenes/Scene_Stage_1.unity
+    path: Assets/Scenes/Temp/Temp_1.unity
     guid: 8532880abcfb373448a8e97a6b690d1e
   - enabled: 1
-    path: Assets/Scenes/Scene_Stage_2.unity
+    path: Assets/Scenes/Temp/Temp_2.unity
     guid: 695e208d7e1a0954dada8314b60cb995
   m_configObjects: {}

@@ -69,8 +69,6 @@ public class DialogManager : MonoBehaviour
 
     private void OnDialog(int scriptNumber, bool portrait, string name, int nextNumber = 0)
     {
-        playerController.OnDialog = true;
-
         if (_dialog.activeSelf == false)
             _dialog.SetActive(true);
 
@@ -107,10 +105,5 @@ public class DialogManager : MonoBehaviour
         audioSource.Stop();
         _arrow.enabled = true;
         _printed[nextNumber] = true;
-    }
-
-    private void ControllerOn()
-    {
-        playerController.OnDialog = false;
     }
 }
