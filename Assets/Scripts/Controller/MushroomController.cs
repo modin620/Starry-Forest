@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class MushroomController : MonoBehaviour
 {
-    [SerializeField] private int score;
+    [SerializeField] private int _score;
+    [SerializeField] private float _moveSpeed;
+
+    private void Update()
+    {
+        Vector2 moveVec = new Vector2(-1, 0);
+        transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,7 +19,8 @@ public class MushroomController : MonoBehaviour
         {
             PlayerController pc = collision.GetComponent<PlayerController>();
 
-            GameManager.totalScore += score;
+            GameManager.totalScore += _score;
+            GameManager.PlayScoreTextEffect();
             pc.TakeItem();
             Destroy(gameObject);
         }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _hp;
-    [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
     [SerializeField, Range(0, 1)] private float _doubleJumpPower;
     [SerializeField] private AudioClip _walkClip;
@@ -14,6 +12,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ParticleSystem _dustEffect;
     [SerializeField] private AudioSource audioSourceFirst;
     [SerializeField] private AudioSource audioSourceSecond;
+    [SerializeField] private ParticleSystem _itemEffect;
+    [SerializeField] private GameManager gm;
+
+    public float Hp;
 
     private Rigidbody2D rigidbody2D;
     private Animator animator;
@@ -40,6 +42,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_ground)
         {
+            animator.SetBool("doJump", false);
+
             if (!audioSourceFirst.isPlaying)
                 AudioPlay("walk");
         }
@@ -58,12 +62,21 @@ public class PlayerController : MonoBehaviour
                 _onDoubleJump = true;
             }
             else
+            {
                 rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+                Invoke("ExitDoubleJump", 1.0f);
+            }
 
+            _ground = false;
             _onJump = true;
-            animator.SetTrigger("onJump");
+            animator.SetBool("doJump", true);
             AudioPlay("jump");
         }
+    }
+
+    private void ExitDoubleJump()
+    {
+        _onDoubleJump = true;
     }
 
     private void AudioPlay(string clipName)
@@ -85,17 +98,20 @@ public class PlayerController : MonoBehaviour
         {
             _ground = true;
             _onJump = false;
+            CancelInvoke("ExitDoubleJump");
             _onDoubleJump = false;
         }
     }
 
     public void Damaged(float damage)
     {
-        _hp -= damage;
+        Hp -= damage;
+        gm.PlayBloodEffect();
     }
 
     public void TakeItem()
     {
         AudioPlay("item");
+        _itemEffect.Play();
     }
 }
