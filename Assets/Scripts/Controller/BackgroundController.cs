@@ -7,8 +7,6 @@ public class BackgroundController : MonoBehaviour
     [SerializeField] private Transform[] _firstLayer;
     [SerializeField] private Transform[] _secondLayer;
     [SerializeField] private Transform[] _thirdLayer;
-    [SerializeField] private Transform[] _forthLayer;
-    [SerializeField] private Transform[] _obstacle;
 
     [SerializeField] private float[] _moveSpeed;
 
@@ -30,9 +28,6 @@ public class BackgroundController : MonoBehaviour
 
         for (int i = 0; i < _thirdLayer.Length; i++)
             _thirdLayer[i].Translate(moveVec * _moveSpeed[2] * Time.deltaTime);
-
-        for (int i = 0; i < _forthLayer.Length; i++)
-            _forthLayer[i].Translate(moveVec * _moveSpeed[3] * Time.deltaTime);
     }
 
     private void Reposition()
@@ -51,9 +46,5 @@ public class BackgroundController : MonoBehaviour
         for (int i = 0; i < _thirdLayer.Length; i++)
             if (_thirdLayer[i].position.x <= LIMIT_VALUE)
                 _thirdLayer[i].position = new Vector2(REPOSITION_VALUE, 0);
-
-        for (int i = 0; i < _forthLayer.Length; i++)
-            if (_forthLayer[i].position.x <= LIMIT_VALUE)
-                _forthLayer[i].position = new Vector2(REPOSITION_VALUE, 0);
     }
 }

@@ -7,24 +7,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _hp;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
+    [SerializeField, Range(0, 1)] private float _doubleJumpPower;
     [SerializeField] private AudioClip _walkClip;
     [SerializeField] private AudioClip _jumpClip;
+    [SerializeField] private AudioClip _itemClip;
     [SerializeField] private ParticleSystem _dustEffect;
+    [SerializeField] private AudioSource audioSourceFirst;
+    [SerializeField] private AudioSource audioSourceSecond;
 
     private Rigidbody2D rigidbody2D;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private AudioSource audioSource;
 
     private bool _ground;
     private bool _onJump;
+    private bool _onDoubleJump;
 
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -37,39 +40,43 @@ public class PlayerController : MonoBehaviour
     {
         if (_ground)
         {
-            if (!audioSource.isPlaying)
+            if (!audioSourceFirst.isPlaying)
                 AudioPlay("walk");
         }
     }
 
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && _ground)
-        {
-            _ground = false;
-            animator.SetTrigger("onJump");
-            AudioPlay("jump");
-            rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
-        }
-
         if (Input.GetButtonDown("Jump"))
         {
-            _onJump = true;
+            if (_onDoubleJump)
+                return;
 
+            if (_onJump)
+            {
+                rigidbody2D.AddForce(Vector2.up * _jumpPower * _doubleJumpPower, ForceMode2D.Impulse);
+                _onDoubleJump = true;
+            }
+            else
+                rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+
+            _onJump = true;
+            animator.SetTrigger("onJump");
+            AudioPlay("jump");
         }
     }
 
     private void AudioPlay(string clipName)
     {
-        audioSource.Stop();
+        audioSourceFirst.Stop();
 
         switch (clipName)
         {
-            case "walk": audioSource.clip = _walkClip; audioSource.pitch = 1.5f; audioSource.volume = 0.6f; break;
-            case "jump": audioSource.clip = _jumpClip; audioSource.pitch = 1.0f; audioSource.volume = 0.8f; break;
+            case "walk": audioSourceFirst.clip = _walkClip; audioSourceFirst.Play(); break;
+            case "jump": audioSourceFirst.clip = _jumpClip; audioSourceFirst.Play(); break;
+            case "item": audioSourceSecond.clip = _itemClip; audioSourceSecond.Play(); break;
         }
 
-        audioSource.Play();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -77,11 +84,18 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Platform")
         {
             _ground = true;
+            _onJump = false;
+            _onDoubleJump = false;
         }
     }
 
     public void Damaged(float damage)
     {
         _hp -= damage;
+    }
+
+    public void TakeItem()
+    {
+        AudioPlay("item");
     }
 }
