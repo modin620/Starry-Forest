@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _jumpPower;
-    [SerializeField, Range(0, 1)] private float _doubleJumpPower;
+    [Header("[ Core ]")]
+    [SerializeField] private GameManager gm;
+
+    [Header("[ Audio ]")]
     [SerializeField] private AudioClip _walkClip;
     [SerializeField] private AudioClip _jumpClip;
     [SerializeField] private AudioClip _itemClip;
-    [SerializeField] private ParticleSystem _dustEffect;
+    [SerializeField] private AudioClip _thronClip;
     [SerializeField] private AudioSource audioSourceFirst;
     [SerializeField] private AudioSource audioSourceSecond;
-    [SerializeField] private ParticleSystem _itemEffect;
-    [SerializeField] private GameManager gm;
 
+    [Header("[ Status ]")]
     public float Hp;
+    [SerializeField] private float _jumpPower;
+    [SerializeField, Range(0, 1)] private float _doubleJumpPower;
+
+    [Header("[ Effect ]")]
+    [SerializeField] private ParticleSystem _dustEffect;
+    [SerializeField] private ParticleSystem _itemEffect;
 
     private Rigidbody2D rigidbody2D;
     private Animator animator;
@@ -24,8 +31,14 @@ public class PlayerController : MonoBehaviour
     private bool _ground;
     private bool _onJump;
     private bool _onDoubleJump;
+    private bool _onInvincibility;
 
     private void Start()
+    {
+        SetComponents(); // allocate component in the variable
+    }
+
+    private void SetComponents()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -45,7 +58,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("doJump", false);
 
             if (!audioSourceFirst.isPlaying)
-                AudioPlay("walk");
+                PlayAudio("walk");
         }
     }
 
@@ -70,7 +83,7 @@ public class PlayerController : MonoBehaviour
             _ground = false;
             _onJump = true;
             animator.SetBool("doJump", true);
-            AudioPlay("jump");
+            PlayAudio("jump");
         }
     }
 
@@ -79,7 +92,7 @@ public class PlayerController : MonoBehaviour
         _onDoubleJump = true;
     }
 
-    private void AudioPlay(string clipName)
+    private void PlayAudio(string clipName)
     {
         audioSourceFirst.Stop();
 
@@ -88,8 +101,8 @@ public class PlayerController : MonoBehaviour
             case "walk": audioSourceFirst.clip = _walkClip; audioSourceFirst.Play(); break;
             case "jump": audioSourceFirst.clip = _jumpClip; audioSourceFirst.Play(); break;
             case "item": audioSourceSecond.clip = _itemClip; audioSourceSecond.Play(); break;
+            case "thorn": audioSourceSecond.clip = _thronClip; audioSourceSecond.Play(); break;
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -103,15 +116,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Damaged(float damage)
+    public void Damaged(float damage, string clipName)
     {
+        if (_onInvincibility)
+            return;
+
+        StartCoroutine(OnInvincibility());
+
         Hp -= damage;
         gm.PlayBloodEffect();
+        PlayAudio(clipName);
     }
+
+    IEnumerator OnInvincibility()
+    {
+        _onInvincibility = true;
+        spriteRenderer.color = new Color(1, 1, 1, 0.8f);
+
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = new Color(1, 1, 1, 1f);
+        _onInvincibility = false;
+    }
+
 
     public void TakeItem()
     {
-        AudioPlay("item");
+        PlayAudio("item");
         _itemEffect.Play();
     }
 }

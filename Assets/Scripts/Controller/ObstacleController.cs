@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class ObstacleController : MonoBehaviour
 {
+    public enum ObstacleType
+    {
+        None,
+        thron,
+    }
+
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _damage;
+    [SerializeField] private float _damage; 
+    [SerializeField] private ObstacleType type;
 
     private void Update()
     {
@@ -18,12 +25,16 @@ public class ObstacleController : MonoBehaviour
         transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             PlayerController pc = collision.gameObject.GetComponent<PlayerController>();
-            pc.Damaged(_damage);
+
+            switch (type)
+            {
+                case ObstacleType.thron: pc.Damaged(_damage, "thorn"); break;
+            }
         }
     }
 }

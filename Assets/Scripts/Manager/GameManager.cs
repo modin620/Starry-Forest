@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject scoreBox;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private PlayerController pc;
-    public Image bloodEffect;
+    public GameObject bloodEffect;
 
     private static Animator scoreTextAnim;
 
@@ -34,13 +34,13 @@ public class GameManager : MonoBehaviour
 
     public void PlayBloodEffect()
     {
-        bloodEffect.enabled = true;
+        bloodEffect.SetActive(true);
         Invoke("OffBloodEffect", 0.5f);
     }
 
     private void OffBloodEffect()
     {
-        bloodEffect.enabled = false;
+        bloodEffect.SetActive(false);
     }
 
     private void ScoreUpdate()
