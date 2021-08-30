@@ -6,19 +6,23 @@ public class PlayerController : MonoBehaviour
 {
     [Header("[ Core ]")]
     [SerializeField] GameManager gm;
-
-    [Header("[ Audio ]")]
-    [SerializeField] AudioClip _walkClip;
-    [SerializeField] AudioClip _jumpClip;
-    [SerializeField] AudioClip _itemClip;
-    [SerializeField] AudioClip _thronClip;
-    [SerializeField] AudioSource audioSourceFirst;
-    [SerializeField] AudioSource audioSourceSecond;
+    [SerializeField] CapsuleCollider2D _defaultCollider;
+    [SerializeField] CapsuleCollider2D _slidingCollider;
 
     [Header("[ Status ]")]
     public float Hp;
     [SerializeField] float _jumpPower;
     [SerializeField, Range(0, 1)] float _doubleJumpPower;
+
+    [Header("[ Audio ]")]
+    [SerializeField] AudioClip _walkClip;
+    [SerializeField] AudioClip _jumpClip;
+    [SerializeField] AudioClip _slidingClip;
+    [SerializeField] AudioClip _itemClip;
+    [SerializeField] AudioClip _thronClip;
+    [SerializeField] AudioSource audioSourceFirst;
+    [SerializeField] AudioSource audioSourceSecond;
+
 
     [Header("[ Effect ]")]
     [SerializeField] ParticleSystem _dustEffect;
@@ -30,8 +34,12 @@ public class PlayerController : MonoBehaviour
 
     bool _ground;
     bool _onJump;
+    bool _doSliding;
     bool _onDoubleJump;
     bool _onInvincibility;
+
+    const float GRAVITY_VALUE = 1.5f;
+    const float DOWNHILL_VALUE = 0.1f;
 
     private void Start()
     {
@@ -40,6 +48,9 @@ public class PlayerController : MonoBehaviour
 
     private void SetComponents()
     {
+        if (gm == null)
+            gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -49,6 +60,7 @@ public class PlayerController : MonoBehaviour
     {
         Walk();
         Jump();
+        Sliding();
     }
 
     private void Walk()
@@ -57,7 +69,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("doJump", false);
 
-            if (!audioSourceFirst.isPlaying)
+            if (!audioSourceFirst.isPlaying && !_doSliding)
                 PlayAudio("walk");
         }
     }
@@ -69,21 +81,54 @@ public class PlayerController : MonoBehaviour
             if (_onDoubleJump)
                 return;
 
-            if (_onJump)
-            {
-                rigidbody2D.AddForce(Vector2.up * _jumpPower * _doubleJumpPower, ForceMode2D.Impulse);
-                _onDoubleJump = true;
-            }
-            else
-            {
-                rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
-                Invoke("ExitDoubleJump", 1.0f);
-            }
+            if (_doSliding)
+                return;
 
+            rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
             _ground = false;
             _onJump = true;
             animator.SetBool("doJump", true);
             PlayAudio("jump");
+
+            if (Input.GetButton("Jump"))
+                rigidbody2D.gravityScale = DOWNHILL_VALUE;
+            else
+                rigidbody2D.gravityScale = GRAVITY_VALUE;
+        }
+    }
+
+    private void Sliding()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (!_ground)
+                return;
+
+            if (!_doSliding)
+            {
+                PlayAudio("sliding");
+                var effectController = _dustEffect.main;
+                effectController.startSize = 0.8f;
+            }
+
+            _doSliding = true;
+            animator.SetBool("doSliding", true);
+            _defaultCollider.enabled = false;
+            _slidingCollider.enabled = true;
+        }
+        else
+        {
+            _doSliding = false;
+            animator.SetBool("doSliding", false);
+
+            var effectController = _dustEffect.main;
+            effectController.startSize = 0.0f;
+
+            if (!_defaultCollider.isActiveAndEnabled)
+                _defaultCollider.enabled = true;
+
+            if (_slidingCollider.isActiveAndEnabled)
+                _slidingCollider.enabled = false;
         }
     }
 
@@ -94,14 +139,34 @@ public class PlayerController : MonoBehaviour
 
     private void PlayAudio(string clipName)
     {
-        audioSourceFirst.Stop();
 
         switch (clipName)
         {
-            case "walk": audioSourceFirst.clip = _walkClip; audioSourceFirst.Play(); break;
-            case "jump": audioSourceFirst.clip = _jumpClip; audioSourceFirst.Play(); break;
-            case "item": audioSourceSecond.clip = _itemClip; audioSourceSecond.Play(); break;
-            case "thorn": audioSourceSecond.clip = _thronClip; audioSourceSecond.Play(); break;
+            case "walk":
+                audioSourceFirst.Stop();
+                audioSourceFirst.clip = _walkClip; 
+                audioSourceFirst.Play(); 
+                break;
+            case "jump":
+                audioSourceFirst.Stop();
+                audioSourceFirst.clip = _jumpClip; 
+                audioSourceFirst.Play(); 
+                break;
+            case "sliding":
+                audioSourceFirst.Stop();
+                audioSourceFirst.clip = _slidingClip; 
+                audioSourceFirst.Play(); 
+                break;
+            case "item":
+                audioSourceSecond.Stop();
+                audioSourceSecond.clip = _itemClip;
+                audioSourceSecond.Play(); 
+                break;
+            case "thorn":
+                audioSourceSecond.Stop();
+                audioSourceSecond.clip = _thronClip; 
+                audioSourceSecond.Play(); 
+                break;
         }
     }
 
@@ -109,6 +174,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Platform")
         {
+            rigidbody2D.gravityScale = GRAVITY_VALUE;
             _ground = true;
             _onJump = false;
             CancelInvoke("ExitDoubleJump");
@@ -133,7 +199,7 @@ public class PlayerController : MonoBehaviour
         _onInvincibility = true;
         spriteRenderer.color = new Color(1, 1, 1, 0.8f);
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(1.0f);
         spriteRenderer.color = new Color(1, 1, 1, 1f);
         _onInvincibility = false;
     }

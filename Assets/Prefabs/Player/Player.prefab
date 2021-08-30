@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 868415815}
   - component: {fileID: 9124161417334725802}
   - component: {fileID: 1303506381}
+  - component: {fileID: 6019340987442542570}
   - component: {fileID: 197517320080667717}
   - component: {fileID: 4338766986980447620}
   m_Layer: 7
@@ -203,9 +204,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1665205799
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: -827392019
+  m_SortingLayer: 4
+  m_SortingOrder: 2
   m_Sprite: {fileID: -597122209057086919, guid: 6ad27569669f4954fb6351a347ca7e74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -273,6 +274,22 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0053268075, y: -0.15121758}
   m_Size: {x: 0.9059789, y: 1.9962418}
   m_Direction: 0
+--- !u!70 &6019340987442542570
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995324183450959555}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.6}
+  m_Size: {x: 1.8, y: 1}
+  m_Direction: 1
 --- !u!82 &197517320080667717
 AudioSource:
   m_ObjectHideFlags: 0
@@ -382,15 +399,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 0}
+  _defaultCollider: {fileID: 1303506381}
+  _slidingCollider: {fileID: 6019340987442542570}
+  Hp: 2
+  _jumpPower: 7.5
+  _doubleJumpPower: 0.4
   _walkClip: {fileID: 8300000, guid: ecfb791f1db36914ab0830d71364c4a7, type: 3}
   _jumpClip: {fileID: 8300000, guid: 924b3dc140815be48b4449e8d87739f1, type: 3}
+  _slidingClip: {fileID: 8300000, guid: 1b19d1cc5cf81f5498b196b326d7afc8, type: 3}
   _itemClip: {fileID: 8300000, guid: e53968ca24bfdc14aa118e3b3b4ed2f2, type: 3}
   _thronClip: {fileID: 8300000, guid: d1281e77c43c8b24898f75030aa4f343, type: 3}
   audioSourceFirst: {fileID: 197517320080667717}
   audioSourceSecond: {fileID: 2084310555724507862}
-  Hp: 2
-  _jumpPower: 7.5
-  _doubleJumpPower: 0.4
   _dustEffect: {fileID: 3279409897990514508}
   _itemEffect: {fileID: 1973670760328059271}
 --- !u!1001 &1517940539
@@ -438,11 +458,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1973670758879344317, guid: 67690e600ccc8c449a9222d83344a362, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 1973670758879344317, guid: 67690e600ccc8c449a9222d83344a362, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.082
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1973670758879344317, guid: 67690e600ccc8c449a9222d83344a362, type: 3}
       propertyPath: m_LocalPosition.z
