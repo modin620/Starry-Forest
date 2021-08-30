@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    [SerializeField] private Transform[] _firstLayer;
-    [SerializeField] private Transform[] _secondLayer;
-    [SerializeField] private Transform[] _thirdLayer;
+    [SerializeField] Transform[] _firstLayer;
+    [SerializeField] Transform[] _secondLayer;
 
-    [SerializeField] private float[] _moveSpeed;
+    [SerializeField] float[] _moveSpeed;
 
     private void Update()
     {
@@ -25,9 +24,6 @@ public class BackgroundController : MonoBehaviour
 
         for (int i = 0; i < _secondLayer.Length; i++)
             _secondLayer[i].Translate(moveVec * _moveSpeed[1] * Time.deltaTime);
-
-        for (int i = 0; i < _thirdLayer.Length; i++)
-            _thirdLayer[i].Translate(moveVec * _moveSpeed[2] * Time.deltaTime);
     }
 
     private void Reposition()
@@ -42,9 +38,5 @@ public class BackgroundController : MonoBehaviour
         for (int i = 0; i < _secondLayer.Length; i++)
             if (_secondLayer[i].position.x <= LIMIT_VALUE)
                 _secondLayer[i].position = new Vector2(REPOSITION_VALUE, 0);
-
-        for (int i = 0; i < _thirdLayer.Length; i++)
-            if (_thirdLayer[i].position.x <= LIMIT_VALUE)
-                _thirdLayer[i].position = new Vector2(REPOSITION_VALUE, 0);
     }
 }

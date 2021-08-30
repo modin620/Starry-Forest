@@ -6,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneController : MonoBehaviour
 {
-    private static string _nextScene;
-
-    private Slider _loadingBar;
+    static string _nextScene;
+    Slider _loadingBar;
 
     public static void LoadScene(string sceneName)
     {

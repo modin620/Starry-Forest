@@ -10,20 +10,8 @@ public class ObstacleController : MonoBehaviour
         thron,
     }
 
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _damage; 
-    [SerializeField] private ObstacleType type;
-
-    private void Update()
-    {
-        Move();
-    }
-
-    private void Move()
-    {
-        Vector2 moveVec = new Vector2(-1, 0);
-        transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
-    }
+    [SerializeField] float _damage; 
+    [SerializeField] ObstacleType type;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

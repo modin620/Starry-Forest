@@ -5,33 +5,33 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("[ Core ]")]
-    [SerializeField] private GameManager gm;
+    [SerializeField] GameManager gm;
 
     [Header("[ Audio ]")]
-    [SerializeField] private AudioClip _walkClip;
-    [SerializeField] private AudioClip _jumpClip;
-    [SerializeField] private AudioClip _itemClip;
-    [SerializeField] private AudioClip _thronClip;
-    [SerializeField] private AudioSource audioSourceFirst;
-    [SerializeField] private AudioSource audioSourceSecond;
+    [SerializeField] AudioClip _walkClip;
+    [SerializeField] AudioClip _jumpClip;
+    [SerializeField] AudioClip _itemClip;
+    [SerializeField] AudioClip _thronClip;
+    [SerializeField] AudioSource audioSourceFirst;
+    [SerializeField] AudioSource audioSourceSecond;
 
     [Header("[ Status ]")]
     public float Hp;
-    [SerializeField] private float _jumpPower;
-    [SerializeField, Range(0, 1)] private float _doubleJumpPower;
+    [SerializeField] float _jumpPower;
+    [SerializeField, Range(0, 1)] float _doubleJumpPower;
 
     [Header("[ Effect ]")]
-    [SerializeField] private ParticleSystem _dustEffect;
-    [SerializeField] private ParticleSystem _itemEffect;
+    [SerializeField] ParticleSystem _dustEffect;
+    [SerializeField] ParticleSystem _itemEffect;
 
-    private Rigidbody2D rigidbody2D;
-    private Animator animator;
-    private SpriteRenderer spriteRenderer;
+    Rigidbody2D rigidbody2D;
+    Animator animator;
+    SpriteRenderer spriteRenderer;
 
-    private bool _ground;
-    private bool _onJump;
-    private bool _onDoubleJump;
-    private bool _onInvincibility;
+    bool _ground;
+    bool _onJump;
+    bool _onDoubleJump;
+    bool _onInvincibility;
 
     private void Start()
     {
