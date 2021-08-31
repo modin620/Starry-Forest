@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("[ Status ]")]
     public float Hp;
     [SerializeField] float _jumpPower;
-    [SerializeField, Range(0, 1)] float _doubleJumpPower;
 
     [Header("[ Audio ]")]
     [SerializeField] AudioClip _walkClip;
@@ -34,12 +33,12 @@ public class PlayerController : MonoBehaviour
 
     bool _ground;
     bool _onJump;
+    bool _onDownhill;
     bool _doSliding;
-    bool _onDoubleJump;
     bool _onInvincibility;
 
     const float GRAVITY_VALUE = 1.5f;
-    const float DOWNHILL_VALUE = 0.1f;
+    const float DOWNHILL_VALUE = 0.05f;
 
     private void Start()
     {
@@ -76,25 +75,33 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        if (Input.GetButton("Jump"))
+        {
+            if (_onDownhill  && !_ground)
+                rigidbody2D.gravityScale = DOWNHILL_VALUE;
+        }
+
+        if (Input.GetButtonUp("Jump"))
+            rigidbody2D.gravityScale = GRAVITY_VALUE;
+
         if (Input.GetButtonDown("Jump"))
         {
-            if (_onDoubleJump)
+            if (_doSliding || _onJump)
                 return;
 
-            if (_doSliding)
-                return;
-
-            rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
             _ground = false;
             _onJump = true;
+            Invoke("OnDownhill", 0.5f);
+
+            rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
             animator.SetBool("doJump", true);
             PlayAudio("jump");
-
-            if (Input.GetButton("Jump"))
-                rigidbody2D.gravityScale = DOWNHILL_VALUE;
-            else
-                rigidbody2D.gravityScale = GRAVITY_VALUE;
         }
+    }
+
+    private void OnDownhill()
+    {
+        _onDownhill = true;
     }
 
     private void Sliding()
@@ -130,11 +137,6 @@ public class PlayerController : MonoBehaviour
             if (_slidingCollider.isActiveAndEnabled)
                 _slidingCollider.enabled = false;
         }
-    }
-
-    private void ExitDoubleJump()
-    {
-        _onDoubleJump = true;
     }
 
     private void PlayAudio(string clipName)
@@ -177,8 +179,7 @@ public class PlayerController : MonoBehaviour
             rigidbody2D.gravityScale = GRAVITY_VALUE;
             _ground = true;
             _onJump = false;
-            CancelInvoke("ExitDoubleJump");
-            _onDoubleJump = false;
+            _onDownhill = false;
         }
     }
 

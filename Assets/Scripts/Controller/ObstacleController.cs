@@ -9,9 +9,28 @@ public class ObstacleController : MonoBehaviour
         None,
         thron,
     }
+    public bool onDown;
 
-    [SerializeField] float _damage; 
+    [SerializeField] float _damage;
+    [SerializeField, Range(0, 1)] float _downSpeed;
     [SerializeField] ObstacleType type;
+
+    private void Update()
+    {
+        Down();
+    }
+
+    private void Down()
+    {
+        if (!onDown)
+            return;
+
+        Vector2 downVec = new Vector2(transform.position.x, 0.05f);
+        transform.position = Vector2.Lerp(transform.position, downVec, _downSpeed);
+
+        if (transform.position.x == 0.05f)
+            onDown = false;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -25,4 +44,6 @@ public class ObstacleController : MonoBehaviour
             }
         }
     }
+
+
 }

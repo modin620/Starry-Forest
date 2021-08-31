@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1982493539490782073}
   - component: {fileID: 5792022415052805956}
   - component: {fileID: 1099570625442949198}
+  - component: {fileID: 4332551632423397835}
   m_Layer: 0
   m_Name: Thron_1
   m_TagString: Untagged
@@ -114,3 +115,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 1
   type: 1
+--- !u!95 &4332551632423397835
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982493539490782075}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7143d4c560a11c94f8482b288e626967, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
