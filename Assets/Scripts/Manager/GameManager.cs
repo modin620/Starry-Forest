@@ -3,20 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    public GameObject bloodEffect;
+    public static int totalScore;
+
+    private static Animator scoreTextAnim;
+
     [SerializeField] private Image[] heartImage;
     [SerializeField] private GameObject scoreBox;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private PlayerController pc;
-    public GameObject bloodEffect;
-
-    private static Animator scoreTextAnim;
-
-    public static int totalScore;
 
     private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
+
+    private void Start()
     {
         scoreTextAnim = scoreText.GetComponent<Animator>();
     }
@@ -27,7 +37,7 @@ public class GameManager : MonoBehaviour
         HeartUpdate();
     }
 
-    public static void PlayScoreTextEffect()
+    public void PlayScoreTextEffect()
     {
         scoreTextAnim.SetTrigger("onTake");
     }
@@ -36,6 +46,12 @@ public class GameManager : MonoBehaviour
     {
         bloodEffect.SetActive(true);
         Invoke("OffBloodEffect", 0.5f);
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("StageScene");
+        Debug.Log("GameOver!");
     }
 
     private void OffBloodEffect()
@@ -62,9 +78,24 @@ public class GameManager : MonoBehaviour
     {
         switch (pc.Hp)
         {
-            case 2: heartImage[0].fillAmount = 1.0f; break;
-            case 1: heartImage[0].fillAmount = 0.5f; break;
-            case 0: heartImage[0].fillAmount = 0.0f; break;
+            case 4:
+                for (int i = 0; i < heartImage.Length; i++)
+                    heartImage[i].fillAmount = 1.0f;
+                break;
+            case 3:
+                heartImage[1].fillAmount = 0.5f;
+                break;
+            case 2:
+                heartImage[1].fillAmount = 0.0f;
+                break;
+            case 1:
+                heartImage[1].fillAmount = 0.0f;
+                heartImage[0].fillAmount = 0.5f;
+                break;
+            case 0:
+                heartImage[1].fillAmount = 0.0f;
+                heartImage[1].fillAmount = 0.0f;
+                break;
         }
     }
 }

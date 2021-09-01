@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("[ Core ]")]
-    [SerializeField] GameManager gm;
     [SerializeField] CapsuleCollider2D _defaultCollider;
     [SerializeField] CapsuleCollider2D _slidingCollider;
 
@@ -19,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _slidingClip;
     [SerializeField] AudioClip _itemClip;
     [SerializeField] AudioClip _thronClip;
+    [SerializeField] AudioClip _donwhillClip;
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
 
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     bool _ground;
     bool _onJump;
     bool _onDownhill;
+    bool _onDownhillAudio;
     bool _doSliding;
     bool _onInvincibility;
 
@@ -47,9 +48,6 @@ public class PlayerController : MonoBehaviour
 
     private void SetComponents()
     {
-        if (gm == null)
-            gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -60,6 +58,7 @@ public class PlayerController : MonoBehaviour
         Walk();
         Jump();
         Sliding();
+        Dead();
     }
 
     private void Walk()
@@ -78,7 +77,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("Jump"))
         {
             if (_onDownhill  && !_ground)
+            {
+                if (!_onDownhillAudio)
+                {
+                    PlayAudio("downhill");
+                    _onDownhillAudio = true;
+                }
+
                 rigidbody2D.gravityScale = DOWNHILL_VALUE;
+            }
         }
 
         if (Input.GetButtonUp("Jump"))
@@ -159,6 +166,11 @@ public class PlayerController : MonoBehaviour
                 audioSourceFirst.clip = _slidingClip; 
                 audioSourceFirst.Play(); 
                 break;
+            case "downhill":
+                audioSourceFirst.Stop();
+                audioSourceFirst.clip = _donwhillClip;
+                audioSourceFirst.Play();
+                break;
             case "item":
                 audioSourceSecond.Stop();
                 audioSourceSecond.clip = _itemClip;
@@ -172,6 +184,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Dead()
+    {
+        if (Hp > 0)
+            return;
+
+        GameManager.instance.GameOver();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Platform")
@@ -180,6 +200,7 @@ public class PlayerController : MonoBehaviour
             _ground = true;
             _onJump = false;
             _onDownhill = false;
+            _onDownhillAudio = false;
         }
     }
 
@@ -191,7 +212,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(OnInvincibility());
 
         Hp -= damage;
-        gm.PlayBloodEffect();
+        GameManager.instance.PlayBloodEffect();
         PlayAudio(clipName);
     }
 

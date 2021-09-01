@@ -13,7 +13,7 @@ public class LoadingSceneController : MonoBehaviour
     public static void LoadScene(string sceneName)
     {
         _nextScene = sceneName;
-        SceneManager.LoadScene("Scene_Loading");
+        SceneManager.LoadScene("LoadingScene");
     }
 
     private void Awake()

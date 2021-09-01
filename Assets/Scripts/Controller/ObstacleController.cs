@@ -12,7 +12,7 @@ public class ObstacleController : MonoBehaviour
     public bool onDown;
 
     [SerializeField] float _damage;
-    [SerializeField, Range(0, 1)] float _downSpeed;
+    [SerializeField] float _downSpeed;
     [SerializeField] ObstacleType type;
 
     private void Update()
@@ -25,10 +25,10 @@ public class ObstacleController : MonoBehaviour
         if (!onDown)
             return;
 
-        Vector2 downVec = new Vector2(transform.position.x, 0.05f);
-        transform.position = Vector2.Lerp(transform.position, downVec, _downSpeed);
+        Vector2 downVec = new Vector2(transform.position.x, -0.5f);
+        transform.position = Vector2.Lerp(transform.position, downVec, _downSpeed * Time.deltaTime);
 
-        if (transform.position.x == 0.05f)
+        if (transform.position.y <= -0.5f)
             onDown = false;
     }
 

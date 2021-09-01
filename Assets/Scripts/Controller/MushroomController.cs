@@ -13,7 +13,7 @@ public class MushroomController : MonoBehaviour
             PlayerController pc = collision.GetComponent<PlayerController>();
 
             GameManager.totalScore += _score;
-            GameManager.PlayScoreTextEffect();
+            GameManager.instance.PlayScoreTextEffect();
             pc.TakeItem();
             Destroy(gameObject);
         }

@@ -59,7 +59,7 @@ public class UI_SelectBar : MonoBehaviour
         switch (_preIndex)
         {
             case 0:
-                LoadingSceneController.LoadScene("Scene_Stage_1");
+                LoadingSceneController.LoadScene("StageScene");
                 break;
             case 1:
             case 2:
