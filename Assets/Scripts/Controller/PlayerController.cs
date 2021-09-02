@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("[ Status ]")]
     public float Hp;
+    float _maxHp;
     [SerializeField] float _jumpPower;
 
     [Header("[ Audio ]")]
@@ -18,14 +19,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _slidingClip;
     [SerializeField] AudioClip _itemClip;
     [SerializeField] AudioClip _thronClip;
-    [SerializeField] AudioClip _donwhillClip;
+    [SerializeField] AudioClip _recoverClip;
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
-
 
     [Header("[ Effect ]")]
     [SerializeField] ParticleSystem _dustEffect;
     [SerializeField] ParticleSystem _itemEffect;
+    [SerializeField] ParticleSystem _recoverEffect;
 
     Rigidbody2D rigidbody2D;
     Animator animator;
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        _maxHp = Hp;
+
         SetComponents(); // allocate component in the variable
     }
 
@@ -74,35 +77,37 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        RaycastHit2D hit;
+        Vector2 rayVector = new Vector2 (transform.position.x - 0.5f, transform.position.y);
+        hit = Physics2D.Raycast(rayVector, Vector2.down, 2.0f, LayerMask.GetMask("Platform"));
+
         if (Input.GetButton("Jump"))
         {
             if (_onDownhill  && !_ground)
-            {
-                if (!_onDownhillAudio)
-                {
-                    PlayAudio("downhill");
-                    _onDownhillAudio = true;
-                }
-
                 rigidbody2D.gravityScale = DOWNHILL_VALUE;
-            }
         }
 
         if (Input.GetButtonUp("Jump"))
             rigidbody2D.gravityScale = GRAVITY_VALUE;
 
-        if (Input.GetButtonDown("Jump"))
+        if (hit.collider != null)
         {
-            if (_doSliding || _onJump)
-                return;
+            if (hit.collider.tag == "Platform")
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    if (_doSliding || _onJump)
+                        return;
 
-            _ground = false;
-            _onJump = true;
-            Invoke("OnDownhill", 0.5f);
+                    _ground = false;
+                    _onJump = true;
+                    Invoke("OnDownhill", 0.5f);
 
-            rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
-            animator.SetBool("doJump", true);
-            PlayAudio("jump");
+                    rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+                    animator.SetBool("doJump", true);
+                    PlayAudio("jump");
+                }
+            }
         }
     }
 
@@ -166,15 +171,15 @@ public class PlayerController : MonoBehaviour
                 audioSourceFirst.clip = _slidingClip; 
                 audioSourceFirst.Play(); 
                 break;
-            case "downhill":
-                audioSourceFirst.Stop();
-                audioSourceFirst.clip = _donwhillClip;
-                audioSourceFirst.Play();
-                break;
             case "item":
                 audioSourceSecond.Stop();
                 audioSourceSecond.clip = _itemClip;
                 audioSourceSecond.Play(); 
+                break;
+            case "recover":
+                audioSourceSecond.Stop();
+                audioSourceSecond.clip = _recoverClip;
+                audioSourceSecond.Play();
                 break;
             case "thorn":
                 audioSourceSecond.Stop();
@@ -200,7 +205,6 @@ public class PlayerController : MonoBehaviour
             _ground = true;
             _onJump = false;
             _onDownhill = false;
-            _onDownhillAudio = false;
         }
     }
 
@@ -231,5 +235,12 @@ public class PlayerController : MonoBehaviour
     {
         PlayAudio("item");
         _itemEffect.Play();
+    }
+
+    public void Recover(float recoverValue)
+    {
+        Hp += Mathf.Clamp(recoverValue, 0, _maxHp);
+        _recoverEffect.Play();
+        PlayAudio("recover");
     }
 }

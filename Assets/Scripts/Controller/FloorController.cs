@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FloorController : MonoBehaviour
 {
+    public float moveSpeed;
+
     [SerializeField] GameObject[] _floorPrefabs;
     [SerializeField] List<GameObject> _preFloor;
-    [SerializeField] float _moveSpeed;
 
     private void Update()
     {
@@ -20,7 +21,7 @@ public class FloorController : MonoBehaviour
 
         for (int i = 0; i < _preFloor.Count; i++)
             if (_preFloor[i] != null)
-                _preFloor[i].transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
+                _preFloor[i].transform.Translate(moveVec * moveSpeed * Time.deltaTime);
     }
 
     private void Replace()

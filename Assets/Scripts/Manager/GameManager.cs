@@ -9,14 +9,21 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameObject bloodEffect;
-    public static int totalScore;
+    public int totalScore;
 
-    private static Animator scoreTextAnim;
+    static Animator scoreTextAnim;
 
-    [SerializeField] private Image[] heartImage;
-    [SerializeField] private GameObject scoreBox;
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private PlayerController pc;
+    [SerializeField] PlayerController pc;
+    [SerializeField] FloorController fc;
+
+    [Header("[ UI ]")]
+    [SerializeField] Slider _progressBar;
+    [SerializeField] Image _fillImage;
+    [SerializeField] Image[] _heartImage;
+    [SerializeField] GameObject _scoreBox;
+    [SerializeField] TextMeshProUGUI _scoreText;
+
+    [SerializeField] float[] speedArray;
 
     private void Awake()
     {
@@ -28,13 +35,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        scoreTextAnim = scoreText.GetComponent<Animator>();
+        scoreTextAnim = _scoreText.GetComponent<Animator>();
     }
 
     private void Update()
     {
         ScoreUpdate();
         HeartUpdate();
+        Progress();
     }
 
     public void PlayScoreTextEffect()
@@ -62,7 +70,7 @@ public class GameManager : MonoBehaviour
     private void ScoreUpdate()
     {
         RectTransform scoreBoxRect;
-        scoreBoxRect = scoreBox.GetComponent<RectTransform>();
+        scoreBoxRect = _scoreBox.GetComponent<RectTransform>();
 
         if (totalScore >= 100)
             scoreBoxRect.anchoredPosition = new Vector3(0, 0, 0);
@@ -71,7 +79,7 @@ public class GameManager : MonoBehaviour
         else
             scoreBoxRect.anchoredPosition = new Vector3(113, 0, 0);
 
-        scoreText.text = totalScore.ToString();
+        _scoreText.text = totalScore.ToString();
     }
 
     private void HeartUpdate()
@@ -79,23 +87,71 @@ public class GameManager : MonoBehaviour
         switch (pc.Hp)
         {
             case 4:
-                for (int i = 0; i < heartImage.Length; i++)
-                    heartImage[i].fillAmount = 1.0f;
+                for (int i = 0; i < _heartImage.Length; i++)
+                    _heartImage[i].fillAmount = 1.0f;
                 break;
             case 3:
-                heartImage[1].fillAmount = 0.5f;
+                _heartImage[1].fillAmount = 0.5f;
                 break;
             case 2:
-                heartImage[1].fillAmount = 0.0f;
+                _heartImage[1].fillAmount = 0.0f;
                 break;
             case 1:
-                heartImage[1].fillAmount = 0.0f;
-                heartImage[0].fillAmount = 0.5f;
+                _heartImage[1].fillAmount = 0.0f;
+                _heartImage[0].fillAmount = 0.5f;
                 break;
             case 0:
-                heartImage[1].fillAmount = 0.0f;
-                heartImage[1].fillAmount = 0.0f;
+                _heartImage[1].fillAmount = 0.0f;
+                _heartImage[1].fillAmount = 0.0f;
                 break;
+        }
+    }
+
+    private void Progress()
+    {
+        _progressBar.value += Time.deltaTime;
+
+        if (_progressBar.maxValue / 8 * 7 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(178, 63, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 1];
+        }
+        else if (_progressBar.maxValue / 8 * 6 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(178, 110, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 2];
+        }
+        else if (_progressBar.maxValue / 8 * 5 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(178, 151, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 3];
+        }
+        else if (_progressBar.maxValue / 8 * 4 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(167, 178, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 4];
+        }
+        else if (_progressBar.maxValue / 8 * 3 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(116, 178, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 5];
+        }
+        else if (_progressBar.maxValue / 8 * 2 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(52, 178, 3, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 6];
+        }
+        else if (_progressBar.maxValue / 8 * 1 <= _progressBar.value)
+        {
+            Color32 nextColor = new Color32(3, 178, 33, 255);
+            _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
+            fc.moveSpeed = speedArray[speedArray.Length - 7];
         }
     }
 }
