@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Trigger : MonoBehaviour
 {
-    public DialogManager dialogManager;
-
     [SerializeField] private int _index;
-
     private bool _nestedCheck;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -19,13 +16,10 @@ public class Trigger : MonoBehaviour
                 case 0:
                     if (!_nestedCheck)
                     {
-                        dialogManager.Condition[0] = true;
-                        dialogManager.CheckCondition();
+                        GameManager.instance.dialogManager.condition[0] = true;
+                        GameManager.instance.dialogManager.Checkcondition();
                         _nestedCheck = true;
                     }
-                    break;
-                case 1:
-                    LoadingSceneController.LoadScene("Scene_Stage_2");
                     break;
             }
         }

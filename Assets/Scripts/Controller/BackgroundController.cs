@@ -17,6 +17,9 @@ public class BackgroundController : MonoBehaviour
 
     private void MoveLayer()
     {
+        if (FloorController.stop)
+            return;
+
         Vector2 moveVec = new Vector2(-1, 0);
 
         for (int i = 0; i < _firstLayer.Length; i++)
@@ -28,6 +31,9 @@ public class BackgroundController : MonoBehaviour
 
     private void Reposition()
     {
+        if (FloorController.stop)
+            return;
+
         const float LIMIT_VALUE = -71.0f;
         const float REPOSITION_VALUE = 35.5f;
 

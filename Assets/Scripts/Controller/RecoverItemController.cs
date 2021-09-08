@@ -5,6 +5,22 @@ using UnityEngine;
 public class RecoverItemController : MonoBehaviour
 {
     [SerializeField] float _recoverValue;
+    [SerializeField] bool _onItem;
+
+    private void Awake()
+    {
+        int ranInt = Random.Range(0, 5);
+        if (ranInt == 0)
+            _onItem = true;
+    }
+
+    private void Start()
+    {
+        if (_onItem)
+            gameObject.SetActive(true);
+        else
+            gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

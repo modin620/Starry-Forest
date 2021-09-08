@@ -19,9 +19,7 @@ public class MushroomController : MonoBehaviour
         if (_onMove)
         {
             _angleValue += Time.deltaTime * _moveSpeed;
-            _angleValue = Mathf.Clamp(_angleValue, -180, 180);
-            Vector2 moveVec = new Vector2(transform.position.x, Mathf.Sin(_angleValue));
-            transform.position = moveVec;
+            transform.position = new Vector2(transform.position.x, Mathf.Sin(_angleValue));
         }
     }
 

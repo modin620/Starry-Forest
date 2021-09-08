@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("[ Core ]")]
+    [Header("Core")]
     [SerializeField] CapsuleCollider2D _defaultCollider;
-    [SerializeField] CapsuleCollider2D _slidingCollider;
+    [SerializeField] BoxCollider2D _slidingCollider;
 
-    [Header("[ Status ]")]
+    [Header("Status")]
     public float Hp;
     float _maxHp;
     [SerializeField] float _jumpPower;
+    [SerializeField] float FLY_UP_VALUE;
+    [SerializeField] float FLY_DOWN_VALUE;
+    [SerializeField] float GRAVITY_VALUE;
+    [SerializeField] float DOWNHILL_VALUE;
 
-    [Header("[ Audio ]")]
+    [Header("Audio")]
     [SerializeField] AudioClip _walkClip;
     [SerializeField] AudioClip _jumpClip;
     [SerializeField] AudioClip _slidingClip;
@@ -23,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
 
-    [Header("[ Effect ]")]
+    [Header("Effect")]
     [SerializeField] ParticleSystem _dustEffect;
     [SerializeField] ParticleSystem _itemEffect;
     [SerializeField] ParticleSystem _recoverEffect;
@@ -35,12 +39,10 @@ public class PlayerController : MonoBehaviour
     bool _ground;
     bool _onJump;
     bool _onDownhill;
-    bool _onDownhillAudio;
     bool _doSliding;
+    bool _onFly;
     bool _onInvincibility;
-
-    const float GRAVITY_VALUE = 1.5f;
-    const float DOWNHILL_VALUE = 0.05f;
+    bool _stopOnceAudio;
 
     private void Start()
     {
@@ -58,14 +60,27 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        Rest();
         Walk();
         Jump();
         Sliding();
+        Fly();
         Dead();
     }
 
     private void Walk()
     {
+        if (FloorController.stop)
+        {
+            if (!_stopOnceAudio)
+            {
+                _stopOnceAudio = true;
+                audioSourceFirst.Stop();
+                audioSourceSecond.Stop();
+            }
+            return;
+        }
+
         if (_ground)
         {
             animator.SetBool("doJump", false);
@@ -77,6 +92,12 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        if (FloorController.stop)
+            return;
+
+        if (_onFly)
+            return;
+
         RaycastHit2D hit;
         Vector2 rayVector = new Vector2 (transform.position.x - 0.5f, transform.position.y);
         hit = Physics2D.Raycast(rayVector, Vector2.down, 2.0f, LayerMask.GetMask("Platform"));
@@ -118,6 +139,9 @@ public class PlayerController : MonoBehaviour
 
     private void Sliding()
     {
+        if (FloorController.stop)
+            return;
+
         if (Input.GetKey(KeyCode.LeftControl))
         {
             if (!_ground)
@@ -151,9 +175,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Fly()
+    {
+        if (FloorController.stop)
+            return;
+
+        if (!_onFly)
+            return;
+
+        if (Input.GetButton("Jump"))
+        {
+            // Need Animation, Audio
+            rigidbody2D.gravityScale = FLY_UP_VALUE;
+        }
+        else
+        {
+            rigidbody2D.gravityScale = FLY_DOWN_VALUE;
+        }
+    }
+
     private void PlayAudio(string clipName)
     {
-
         switch (clipName)
         {
             case "walk":
@@ -191,10 +233,23 @@ public class PlayerController : MonoBehaviour
 
     private void Dead()
     {
+        if (FloorController.stop)
+            return;
+
         if (Hp > 0)
             return;
 
         GameManager.instance.GameOver();
+    }
+
+    private void Rest()
+    {
+        if (!FloorController.stop)
+            return;
+
+        animator.SetBool("doStanding", true);
+        animator.SetBool("doJump", false);
+        animator.SetBool("doSliding", false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -239,7 +294,9 @@ public class PlayerController : MonoBehaviour
 
     public void Recover(float recoverValue)
     {
-        Hp += Mathf.Clamp(recoverValue, 0, _maxHp);
+        if (Hp < _maxHp)
+            Hp += recoverValue;
+
         _recoverEffect.Play();
         PlayAudio("recover");
     }

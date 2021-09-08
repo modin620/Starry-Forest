@@ -2,25 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogManager : MonoBehaviour
 {
-    public bool[] Condition;
-
+    public bool[] condition;
     public PlayerController playerController;
 
+    [Header("Dialog")]
+    [SerializeField] private GameObject _hud;
     [SerializeField] private GameObject _dialog;
+    [SerializeField] private GameObject _result;
     [SerializeField] private Image _portrait;
     [SerializeField] private Image _arrow;
-    [SerializeField] private Text _name;
+    [SerializeField] private TextMeshProUGUI _name;
     [SerializeField] private Text _typingText;
     [SerializeField] private float _typingSpeed;
     [SerializeField] private AudioClip _messageClip;
     [SerializeField, TextArea] private string[] _script;
 
-    public bool[] _printed = new bool[10];
+    bool[] _printed = new bool[10];
 
-    private AudioSource audioSource;
+    AudioSource audioSource;
 
     private void Awake()
     {
@@ -32,18 +35,24 @@ public class DialogManager : MonoBehaviour
         NextScript();
     }
 
-    public void CheckCondition()
+    public void Checkcondition()
     {
-        if (Condition[0])
+        if (condition[0])
         {
             OnDialog(0, true, "달이", 1);
-            Condition[0] = false;
+            condition[0] = false;
         }
 
-        if (Condition[1])
+        if (condition[1])
         {
-            OnDialog(1, true, "달이");
-            Condition[1] = false;
+            OnDialog(1, true, "달이", 2);
+            condition[1] = false;
+        }
+
+        if (condition[2])
+        {
+            OnDialog(2, true, "달이", 0);
+            condition[2] = false;
         }
     }
 
@@ -55,22 +64,33 @@ public class DialogManager : MonoBehaviour
             {
                 _printed[0] = false;
                 _dialog.SetActive(false);
+                _result.SetActive(true);
                 Invoke("ControllerOn", 0.5f);
             }
 
             if (_printed[1])
             {
                 _printed[1] = false;
-                Condition[1] = true;
-                CheckCondition();
+                condition[1] = true;
+                Checkcondition();
+            }
+
+            if (_printed[2])
+            {
+                _printed[2] = false;
+                condition[2] = true;
+                Checkcondition();
             }
         }
     }
 
-    private void OnDialog(int scriptNumber, bool portrait, string name, int nextNumber = 0)
+    private void OnDialog(int scriptNumber, bool portrait, string name, int nextNumber = 1)
     {
         if (_dialog.activeSelf == false)
+        {
+            _hud.SetActive(false);
             _dialog.SetActive(true);
+        }
 
         _arrow.enabled = false;
 

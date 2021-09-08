@@ -8,13 +8,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public DialogManager dialogManager { get { return dm; } }
     public GameObject bloodEffect;
     public int totalScore;
+    public float progressValue { get { return _progressBar.value; } }
+    public float progressMaxValue { get { return _progressBar.maxValue; } }
 
     static Animator scoreTextAnim;
 
     [SerializeField] PlayerController pc;
     [SerializeField] FloorController fc;
+    [SerializeField] DialogManager dm;
 
     [Header("[ UI ]")]
     [SerializeField] Slider _progressBar;
@@ -24,6 +28,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _scoreText;
 
     [SerializeField] float[] speedArray;
+
+    bool _onEnd;
 
     private void Awake()
     {
@@ -43,6 +49,7 @@ public class GameManager : MonoBehaviour
         ScoreUpdate();
         HeartUpdate();
         Progress();
+        EndDialog();
     }
 
     public void PlayScoreTextEffect()
@@ -153,5 +160,23 @@ public class GameManager : MonoBehaviour
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
             fc.moveSpeed = speedArray[speedArray.Length - 7];
         }
+    }
+
+    private void EndDialog()
+    {
+        if (!FloorController.stop)
+            return;
+
+        if (_onEnd)
+            return;
+
+        _onEnd = true;
+        Invoke("EndDialogRoutine", 1.5f);
+    }
+
+    private void EndDialogRoutine()
+    {
+        dm.condition[0] = true;
+        dm.Checkcondition();
     }
 }

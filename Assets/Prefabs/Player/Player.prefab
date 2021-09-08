@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 868415815}
   - component: {fileID: 9124161417334725802}
   - component: {fileID: 1303506381}
-  - component: {fileID: 6019340987442542570}
+  - component: {fileID: 1289363172146736291}
   - component: {fileID: 197517320080667717}
   - component: {fileID: 4338766986980447620}
   m_Layer: 7
@@ -272,11 +272,11 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0053268075, y: -0.15121758}
-  m_Size: {x: 0.9059789, y: 1.9962418}
+  m_Offset: {x: 0.0068956614, y: -0.03144121}
+  m_Size: {x: 0.8424475, y: 2.2358112}
   m_Direction: 0
---- !u!70 &6019340987442542570
-CapsuleCollider2D:
+--- !u!61 &1289363172146736291
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -288,9 +288,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.6}
-  m_Size: {x: 1.8, y: 1}
-  m_Direction: 1
+  m_Offset: {x: 0, y: -0.75}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 1.7777778, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 0.7}
+  m_EdgeRadius: 0
 --- !u!82 &197517320080667717
 AudioSource:
   m_ObjectHideFlags: 0
@@ -400,19 +410,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultCollider: {fileID: 1303506381}
-  _slidingCollider: {fileID: 6019340987442542570}
+  _slidingCollider: {fileID: 1289363172146736291}
   Hp: 4
   _jumpPower: 7.5
+  FLY_UP_VALUE: 0
+  FLY_DOWN_VALUE: 0
+  GRAVITY_VALUE: 0
+  DOWNHILL_VALUE: 0
   _walkClip: {fileID: 8300000, guid: ecfb791f1db36914ab0830d71364c4a7, type: 3}
   _jumpClip: {fileID: 8300000, guid: 924b3dc140815be48b4449e8d87739f1, type: 3}
   _slidingClip: {fileID: 8300000, guid: a08bf25e3998dba40ba37bba77d85a7f, type: 3}
   _itemClip: {fileID: 8300000, guid: e53968ca24bfdc14aa118e3b3b4ed2f2, type: 3}
   _thronClip: {fileID: 8300000, guid: d1281e77c43c8b24898f75030aa4f343, type: 3}
-  _recoverClip: {fileID: 0}
+  _recoverClip: {fileID: 8300000, guid: 0ea9399066b480d4dac44b420e297819, type: 3}
   audioSourceFirst: {fileID: 197517320080667717}
   audioSourceSecond: {fileID: 2084310555724507862}
   _dustEffect: {fileID: 3279409897990514508}
   _itemEffect: {fileID: 1973670760328059271}
+  _recoverEffect: {fileID: 3065716037567541034}
+  _onFly: 0
 --- !u!1001 &1517940539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -600,6 +616,11 @@ PrefabInstance:
 --- !u!4 &3065716037567541035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 251354863343553331, guid: 9958fc7fe53588b48843bbf7d7f9fa12, type: 3}
+  m_PrefabInstance: {fileID: 3023992966697362456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3065716037567541034 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 251354863343553330, guid: 9958fc7fe53588b48843bbf7d7f9fa12, type: 3}
   m_PrefabInstance: {fileID: 3023992966697362456}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6133676891978492003
