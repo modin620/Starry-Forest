@@ -413,22 +413,22 @@ MonoBehaviour:
   _slidingCollider: {fileID: 1289363172146736291}
   Hp: 4
   _jumpPower: 7.5
-  FLY_UP_VALUE: 0
-  FLY_DOWN_VALUE: 0
-  GRAVITY_VALUE: 0
-  DOWNHILL_VALUE: 0
+  FLY_UP_VALUE: -0.75
+  FLY_DOWN_VALUE: 1
+  GRAVITY_VALUE: 1.5
+  DOWNHILL_VALUE: 0.15
   _walkClip: {fileID: 8300000, guid: ecfb791f1db36914ab0830d71364c4a7, type: 3}
   _jumpClip: {fileID: 8300000, guid: 924b3dc140815be48b4449e8d87739f1, type: 3}
   _slidingClip: {fileID: 8300000, guid: a08bf25e3998dba40ba37bba77d85a7f, type: 3}
   _itemClip: {fileID: 8300000, guid: e53968ca24bfdc14aa118e3b3b4ed2f2, type: 3}
   _thronClip: {fileID: 8300000, guid: d1281e77c43c8b24898f75030aa4f343, type: 3}
   _recoverClip: {fileID: 8300000, guid: 0ea9399066b480d4dac44b420e297819, type: 3}
+  _doubleJumpClip: {fileID: 8300000, guid: af4910c9b2e3e7d4997c73af579c9621, type: 3}
   audioSourceFirst: {fileID: 197517320080667717}
   audioSourceSecond: {fileID: 2084310555724507862}
   _dustEffect: {fileID: 3279409897990514508}
   _itemEffect: {fileID: 1973670760328059271}
   _recoverEffect: {fileID: 3065716037567541034}
-  _onFly: 0
 --- !u!1001 &1517940539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -686,6 +686,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -827392019
       objectReference: {fileID: 0}
+    - target: {fileID: 8117988400163952680, guid: b7fea00c1763440428f8a708c44bd378, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8691383574487207727, guid: b7fea00c1763440428f8a708c44bd378, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0

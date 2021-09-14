@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -24,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _itemClip;
     [SerializeField] AudioClip _thronClip;
     [SerializeField] AudioClip _recoverClip;
+    [SerializeField] AudioClip _doubleJumpClip;
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
 
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     bool _onFly;
     bool _onInvincibility;
     bool _stopOnceAudio;
+    bool _onDoubleJump;
 
     private void Start()
     {
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
     private void Walk()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
         {
             if (!_stopOnceAudio)
             {
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
         if (_ground)
         {
             animator.SetBool("doJump", false);
+            animator.SetBool("doDoubleJump", false);
 
             if (!audioSourceFirst.isPlaying && !_doSliding)
                 PlayAudio("walk");
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         if (_onFly)
@@ -105,7 +107,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("Jump"))
         {
             if (_onDownhill  && !_ground)
+            {
+                if (!_onDoubleJump)
+                {
+                    Vector2 doubleJumpVec = new Vector2(rigidbody2D.velocity.x, 0.0f);
+                    rigidbody2D.velocity = doubleJumpVec;
+                    rigidbody2D.AddForce(Vector2.up * _jumpPower / 4, ForceMode2D.Impulse);
+                    PlayAudio("doubleJump");
+                    _onDoubleJump = true;
+                }
                 rigidbody2D.gravityScale = DOWNHILL_VALUE;
+                animator.SetBool("doDoubleJump", true);
+            }
         }
 
         if (Input.GetButtonUp("Jump"))
@@ -139,7 +152,7 @@ public class PlayerController : MonoBehaviour
 
     private void Sliding()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         if (Input.GetKey(KeyCode.LeftControl))
@@ -177,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
     private void Fly()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         if (!_onFly)
@@ -228,12 +241,17 @@ public class PlayerController : MonoBehaviour
                 audioSourceSecond.clip = _thronClip; 
                 audioSourceSecond.Play(); 
                 break;
+            case "doubleJump":
+                audioSourceFirst.Stop();
+                audioSourceFirst.clip = _doubleJumpClip;
+                audioSourceFirst.Play();
+                break;
         }
     }
 
     private void Dead()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         if (Hp > 0)
@@ -244,7 +262,7 @@ public class PlayerController : MonoBehaviour
 
     private void Rest()
     {
-        if (!FloorController.stop)
+        if (!FloorManager.stop)
             return;
 
         animator.SetBool("doStanding", true);
@@ -260,6 +278,17 @@ public class PlayerController : MonoBehaviour
             _ground = true;
             _onJump = false;
             _onDownhill = false;
+            _onDoubleJump = false;
+            _onFly = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Fly")
+        {
+            _onFly = true;
+            Destroy(collision.gameObject);
         }
     }
 

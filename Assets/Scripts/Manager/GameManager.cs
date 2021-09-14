@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     static Animator scoreTextAnim;
 
     [SerializeField] PlayerController pc;
-    [SerializeField] FloorController fc;
+    [SerializeField] FloorManager fc;
     [SerializeField] DialogManager dm;
 
     [Header("[ UI ]")]
@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject _scoreBox;
     [SerializeField] TextMeshProUGUI _scoreText;
 
-    [SerializeField] float[] speedArray;
+    [SerializeField] float[] _speedArray;
+    [SerializeField] int _nowStageIndex;
 
     bool _onEnd;
 
@@ -63,10 +64,25 @@ public class GameManager : MonoBehaviour
         Invoke("OffBloodEffect", 0.5f);
     }
 
+    public void ReTry()
+    {
+        CallScene();
+    }
+
+    public void NextGame()
+    {
+        _nowStageIndex++;
+        CallScene();
+    }
+
     public void GameOver()
     {
-        SceneManager.LoadScene("StageScene");
-        Debug.Log("GameOver!");
+        CallScene();
+    }
+
+    private void CallScene()
+    {
+        LoadingSceneController.LoadScene("StageScene_" + _nowStageIndex);
     }
 
     private void OffBloodEffect()
@@ -122,49 +138,49 @@ public class GameManager : MonoBehaviour
         {
             Color32 nextColor = new Color32(178, 63, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 1];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 1];
         }
         else if (_progressBar.maxValue / 8 * 6 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(178, 110, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 2];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 2];
         }
         else if (_progressBar.maxValue / 8 * 5 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(178, 151, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 3];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 3];
         }
         else if (_progressBar.maxValue / 8 * 4 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(167, 178, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 4];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 4];
         }
         else if (_progressBar.maxValue / 8 * 3 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(116, 178, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 5];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 5];
         }
         else if (_progressBar.maxValue / 8 * 2 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(52, 178, 3, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 6];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 6];
         }
         else if (_progressBar.maxValue / 8 * 1 <= _progressBar.value)
         {
             Color32 nextColor = new Color32(3, 178, 33, 255);
             _fillImage.color = Color32.Lerp(_fillImage.color, nextColor, 1);
-            fc.moveSpeed = speedArray[speedArray.Length - 7];
+            fc.moveSpeed = _speedArray[_speedArray.Length - 7];
         }
     }
 
     private void EndDialog()
     {
-        if (!FloorController.stop)
+        if (!FloorManager.stop)
             return;
 
         if (_onEnd)

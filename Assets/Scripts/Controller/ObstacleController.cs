@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ObstacleController : MonoBehaviour
 {
+    // 그러면 매니저를 전체를 스태틱으로 하기는 싫은데 변수 하나만 가져오고 싶으면
+
+
     public enum ObstacleType
     {
         None,

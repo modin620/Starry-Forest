@@ -17,7 +17,7 @@ public class BackgroundController : MonoBehaviour
 
     private void MoveLayer()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         Vector2 moveVec = new Vector2(-1, 0);
@@ -31,7 +31,7 @@ public class BackgroundController : MonoBehaviour
 
     private void Reposition()
     {
-        if (FloorController.stop)
+        if (FloorManager.stop)
             return;
 
         const float LIMIT_VALUE = -71.0f;
