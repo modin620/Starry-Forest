@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class ObstacleController : MonoBehaviour
 {
-    // 그러면 매니저를 전체를 스태틱으로 하기는 싫은데 변수 하나만 가져오고 싶으면
-
-
     public enum ObstacleType
     {
         None,
@@ -14,7 +11,7 @@ public class ObstacleController : MonoBehaviour
     }
     public bool onDown;
 
-    [SerializeField] float _damage;
+    [SerializeField] int _damage;
     [SerializeField] float _downSpeed;
     [SerializeField] ObstacleType type;
 
@@ -45,6 +42,8 @@ public class ObstacleController : MonoBehaviour
             {
                 case ObstacleType.thron: pc.Damaged(_damage, "thorn"); break;
             }
+
+            GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
         }
     }
 

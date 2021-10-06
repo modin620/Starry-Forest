@@ -8,9 +8,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] BoxCollider2D _slidingCollider;
 
     [Header("Status")]
-    public float Hp;
-    float _maxHp;
+    public int _hp;
+    public int _maxHp;
     [SerializeField] float _jumpPower;
+    [SerializeField] float _flyTime;
     [SerializeField] float FLY_UP_VALUE;
     [SerializeField] float FLY_DOWN_VALUE;
     [SerializeField] float GRAVITY_VALUE;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip _thronClip;
     [SerializeField] AudioClip _recoverClip;
     [SerializeField] AudioClip _doubleJumpClip;
+    [SerializeField] AudioClip _dandelionClip;
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
 
@@ -31,10 +33,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] ParticleSystem _dustEffect;
     [SerializeField] ParticleSystem _itemEffect;
     [SerializeField] ParticleSystem _recoverEffect;
+    [SerializeField] ParticleSystem _dandelionEffect;
+    [SerializeField] SpriteRenderer _dandelionBuds;
 
     Rigidbody2D rigidbody2D;
     Animator animator;
     SpriteRenderer spriteRenderer;
+
+    float _flyCurrentTime;
 
     bool _ground;
     bool _onJump;
@@ -42,46 +48,47 @@ public class PlayerController : MonoBehaviour
     bool _doSliding;
     bool _onFly;
     bool _onInvincibility;
-    bool _stopOnceAudio;
+    bool _onRest;
     bool _onDoubleJump;
 
-    private void Start()
-    {
-        _maxHp = Hp;
-
-        SetComponents(); // allocate component in the variable
-    }
-
-    private void SetComponents()
+    private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        SetHp();
+    }
+
+    void SetHp()
+    {
+        _hp = GameManager.instance.LoadHp();
+        _maxHp = GameManager.instance.LoadMaxHp();
+
+        GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
+    }
+
     private void Update()
     {
-        Rest();
-        Walk();
-        Jump();
-        Sliding();
-        Fly();
-        Dead();
+        if (GameManager.instance.StageManagerInstance.end)
+        {
+            Rest();
+        }
+        else
+        {
+            Walk();
+            Jump();
+            Sliding();
+            Fly();
+            Dead();
+        }
     }
 
     private void Walk()
     {
-        if (FloorManager.stop)
-        {
-            if (!_stopOnceAudio)
-            {
-                _stopOnceAudio = true;
-                audioSourceFirst.Stop();
-                audioSourceSecond.Stop();
-            }
-            return;
-        }
-
         if (_ground)
         {
             animator.SetBool("doJump", false);
@@ -94,9 +101,6 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (FloorManager.stop)
-            return;
-
         if (_onFly)
             return;
 
@@ -152,9 +156,6 @@ public class PlayerController : MonoBehaviour
 
     private void Sliding()
     {
-        if (FloorManager.stop)
-            return;
-
         if (Input.GetKey(KeyCode.LeftControl))
         {
             if (!_ground)
@@ -190,21 +191,38 @@ public class PlayerController : MonoBehaviour
 
     private void Fly()
     {
-        if (FloorManager.stop)
-            return;
-
         if (!_onFly)
+        {
+            if (_flyCurrentTime != 0) 
+                _flyCurrentTime = 0;
+
+            animator.SetBool("doFly", false);
+            if (_dandelionEffect.isPlaying)
+                _dandelionEffect.Stop();
+
             return;
+        }
+
+        animator.SetBool("doFly", true);
+        if (!_dandelionEffect.isPlaying)
+            _dandelionEffect.Play();
+
+        _flyCurrentTime += Time.deltaTime;
+        _dandelionBuds.color = new Color(1, 1, 1, 1 - _flyCurrentTime / _flyTime);
+
+        if (_flyCurrentTime >= _flyTime)
+        {
+            _onFly = false;
+            rigidbody2D.gravityScale = FLY_DOWN_VALUE;
+            return;
+        }
 
         if (Input.GetButton("Jump"))
         {
-            // Need Animation, Audio
             rigidbody2D.gravityScale = FLY_UP_VALUE;
         }
         else
-        {
             rigidbody2D.gravityScale = FLY_DOWN_VALUE;
-        }
     }
 
     private void PlayAudio(string clipName)
@@ -246,28 +264,34 @@ public class PlayerController : MonoBehaviour
                 audioSourceFirst.clip = _doubleJumpClip;
                 audioSourceFirst.Play();
                 break;
+            case "dandelion":
+                audioSourceSecond.Stop();
+                audioSourceSecond.clip = _dandelionClip;
+                audioSourceSecond.Play();
+                break;
         }
     }
 
     private void Dead()
     {
-        if (FloorManager.stop)
+        if (_hp > 0)
             return;
 
-        if (Hp > 0)
-            return;
-
-        GameManager.instance.GameOver();
+        GameManager.instance.StageManagerInstance.GameOver();
     }
 
     private void Rest()
     {
-        if (!FloorManager.stop)
-            return;
+        if (!_onRest)
+        {
+            _onRest = true;
+            audioSourceFirst.Stop();
+            audioSourceSecond.Stop();
 
-        animator.SetBool("doStanding", true);
-        animator.SetBool("doJump", false);
-        animator.SetBool("doSliding", false);
+            animator.SetBool("doStanding", true);
+            animator.SetBool("doJump", false);
+            animator.SetBool("doSliding", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -288,19 +312,20 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Fly")
         {
             _onFly = true;
+            PlayAudio("dandelion");
             Destroy(collision.gameObject);
         }
     }
 
-    public void Damaged(float damage, string clipName)
+    public void Damaged(int damage, string clipName)
     {
         if (_onInvincibility)
             return;
 
         StartCoroutine(OnInvincibility());
 
-        Hp -= damage;
-        GameManager.instance.PlayBloodEffect();
+        _hp -= damage;
+        GameManager.instance.UIManagerInstance.BloodInstance.PlayBlood();
         PlayAudio(clipName);
     }
 
@@ -321,10 +346,10 @@ public class PlayerController : MonoBehaviour
         _itemEffect.Play();
     }
 
-    public void Recover(float recoverValue)
+    public void Recover(int recoverValue)
     {
-        if (Hp < _maxHp)
-            Hp += recoverValue;
+        if (_hp < _maxHp)
+            _hp += recoverValue;
 
         _recoverEffect.Play();
         PlayAudio("recover");

@@ -16,8 +16,7 @@ public class Trigger : MonoBehaviour
                 case 0:
                     if (!_nestedCheck)
                     {
-                        GameManager.instance.dialogManager.condition[0] = true;
-                        GameManager.instance.dialogManager.Checkcondition();
+                        GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(0);
                         _nestedCheck = true;
                     }
                     break;

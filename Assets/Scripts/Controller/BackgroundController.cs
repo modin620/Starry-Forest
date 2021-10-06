@@ -9,6 +9,9 @@ public class BackgroundController : MonoBehaviour
 
     [SerializeField] float[] _moveSpeed;
 
+    const float LIMIT_VALUE = -71.0f;
+    const float REPOSITION_VALUE = 35.5f;
+
     private void Update()
     {
         MoveLayer();
@@ -17,10 +20,10 @@ public class BackgroundController : MonoBehaviour
 
     private void MoveLayer()
     {
-        if (FloorManager.stop)
+        if (GameManager.instance.StageManagerInstance.end)
             return;
 
-        Vector2 moveVec = new Vector2(-1, 0);
+        Vector2 moveVec = Vector2.left;
 
         for (int i = 0; i < _firstLayer.Length; i++)
             _firstLayer[i].Translate(moveVec * _moveSpeed[0] * Time.deltaTime);
@@ -31,11 +34,8 @@ public class BackgroundController : MonoBehaviour
 
     private void Reposition()
     {
-        if (FloorManager.stop)
+        if (GameManager.instance.StageManagerInstance.end)
             return;
-
-        const float LIMIT_VALUE = -71.0f;
-        const float REPOSITION_VALUE = 35.5f;
 
         for (int i = 0; i <_firstLayer.Length; i++)
             if (_firstLayer[i].position.x <= LIMIT_VALUE)

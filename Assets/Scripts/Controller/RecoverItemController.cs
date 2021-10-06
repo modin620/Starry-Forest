@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RecoverItemController : MonoBehaviour
 {
-    [SerializeField] float _recoverValue;
+    [SerializeField] int _recoverValue;
     [SerializeField] bool _onItem;
 
     private void Awake()

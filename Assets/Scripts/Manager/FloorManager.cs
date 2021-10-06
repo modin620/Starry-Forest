@@ -4,42 +4,46 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    public static bool stop; // 
-
-    public float moveSpeed;
-
+    [Header("Floor")]
     [SerializeField] GameObject[] _floorPrefabs;
     [SerializeField] List<GameObject> _preFloor;
     [SerializeField] GameObject _lastFloor;
-
+    [SerializeField] float _moveSpeed;
     bool _onLast;
 
-    private void Update()
+    RunningBar runningBar;
+
+    private void Start()
+    {
+        runningBar = GameManager.instance.UIManagerInstance.runningBarInstance;
+    }
+
+    void Update()
     {
         Move();
 
-        if (GameManager.instance.progressValue >= GameManager.instance.progressMaxValue)
+        if (runningBar.GetBarPreValue() >= runningBar.GetBarMaxValue())
             Replace(true);
         else
             Replace(false);
     }
 
-    private void Move()
+    void Move()
     {
-        if (_onLast && _preFloor[_preFloor.Count - 1].gameObject.transform.position.x <= 1)
+        if (_onLast && _preFloor[_preFloor.Count - 1].gameObject.transform.position.x <= 0)
         {
-            stop = true;
+            GameManager.instance.StageManagerInstance.EndGame();
             return;
         }
 
-        Vector2 moveVec = new Vector2(-1, 0);
+        Vector2 moveVec = Vector2.left;
 
         for (int i = 0; i < _preFloor.Count; i++)
             if (_preFloor[i] != null)
-                _preFloor[i].transform.Translate(moveVec * moveSpeed * Time.deltaTime);
+                _preFloor[i].transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
     }
 
-    private void Replace(bool onLast)
+    void Replace(bool onLast)
     {
         if (_onLast)
             return;
@@ -66,7 +70,7 @@ public class FloorManager : MonoBehaviour
                 }
     }
 
-    private void CreateFloor(bool onLast)
+    void CreateFloor(bool onLast)
     {
         const float REPOSITION_VALUE = 35.5f;
         Vector2 createPoint = new Vector2(REPOSITION_VALUE, transform.position.y);
@@ -86,11 +90,16 @@ public class FloorManager : MonoBehaviour
         }
     }
 
-    private void CallLastFloor()
-    { 
-        if (GameManager.instance.progressValue >= GameManager.instance.progressMaxValue)
-        {
+    void CallLastFloor()
+    {
+        RunningBar runningBarLogic = GameManager.instance.UIManagerInstance.runningBarInstance;
+
+        if (runningBarLogic.GetBarPreValue() >= runningBarLogic.GetBarMaxValue())
             Replace(true);
-        }
+    }
+
+    public void SetMoveValue(float value)
+    {
+        _moveSpeed = value;
     }
 }

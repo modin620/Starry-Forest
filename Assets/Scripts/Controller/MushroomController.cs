@@ -29,9 +29,9 @@ public class MushroomController : MonoBehaviour
         {
             PlayerController pc = collision.GetComponent<PlayerController>();
 
-            GameManager.instance.totalScore += _score;
-            GameManager.instance.PlayScoreTextEffect();
+            GameManager.instance.UIManagerInstance.ScoreInstance.CheckScore(_score);
             pc.TakeItem();
+            
             Destroy(gameObject);
         }
     }
