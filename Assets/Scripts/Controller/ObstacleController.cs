@@ -2,50 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ObstacleType
+{
+    None,
+    Thron,
+    Vine
+}
+
+public class ObstacleInfo
+{
+    public int _damage;
+}
+
 public class ObstacleController : MonoBehaviour
 {
-    public enum ObstacleType
+    [SerializeField] protected ObstacleType _myType = ObstacleType.None;
+    [SerializeField] int _thronDamage = 1;
+    [SerializeField] int _vineDamage = 1;
+
+    protected ObstacleInfo _info = new ObstacleInfo();
+
+    protected void SetInfo()
     {
-        None,
-        thron,
-    }
-    public bool onDown;
-
-    [SerializeField] int _damage;
-    [SerializeField] float _downSpeed;
-    [SerializeField] ObstacleType type;
-
-    private void Update()
-    {
-        Down();
-    }
-
-    private void Down()
-    {
-        if (!onDown)
-            return;
-
-        Vector2 downVec = new Vector2(transform.position.x, -0.5f);
-        transform.position = Vector2.Lerp(transform.position, downVec, _downSpeed * Time.deltaTime);
-
-        if (transform.position.y <= -0.5f)
-            onDown = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
+        switch (_myType)
         {
-            PlayerController pc = collision.gameObject.GetComponent<PlayerController>();
-
-            switch (type)
-            {
-                case ObstacleType.thron: pc.Damaged(_damage, "thorn"); break;
-            }
-
-            GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
+            case ObstacleType.Thron:
+                _info._damage = _thronDamage;
+                break;
+            case ObstacleType.Vine:
+                _info._damage = _vineDamage;
+                break;
         }
     }
-
-
 }

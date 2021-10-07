@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThornAnimationTrigger : MonoBehaviour
+public class VineTrigger : MonoBehaviour
 {
-    [SerializeField] ObstacleController oc;
+    [SerializeField] Vine theVine;
 
     AudioSource audioSource;
 
@@ -15,7 +15,7 @@ public class ThornAnimationTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        oc.onDown = true;
+        theVine._onDown = true;
         audioSource.Play();
     }
 }

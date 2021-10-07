@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2263775346832794783}
   - component: {fileID: 2263775346832794782}
-  - component: {fileID: 2263775346832794781}
   - component: {fileID: 2263775346832794780}
   - component: {fileID: 2263775346832794754}
+  - component: {fileID: -177516927784549339}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Item
@@ -85,21 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2263775346832794781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2263775346832794777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b7dbad88774c948b54e282c2667a9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _score: 1
-  _onMove: 0
-  _moveSpeed: 0
 --- !u!58 &2263775346832794780
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -135,3 +120,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-177516927784549339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2263775346832794777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aabc56de01fdb4245a7fe290f2213691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myType: 1
+  _mushroomScore: 1
+  _potionScore: 1
+  _onMove: 0
+  _moveSpeed: 2

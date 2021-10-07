@@ -351,6 +351,8 @@ public class PlayerController : MonoBehaviour
         if (_hp < _maxHp)
             _hp += recoverValue;
 
+        GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
+
         _recoverEffect.Play();
         PlayAudio("recover");
     }

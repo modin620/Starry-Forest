@@ -205,7 +205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3998892007426990085, guid: 53823df7f2c71324ebf7a6c79aebc45a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.001
       objectReference: {fileID: 0}
     - target: {fileID: 3998892007426990085, guid: 53823df7f2c71324ebf7a6c79aebc45a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -489,7 +489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6225775050589582274, guid: 2dba8dae55fe09440afed4b955583a46, type: 3}
       propertyPath: m_Name
-      value: Thron_3
+      value: Vine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2dba8dae55fe09440afed4b955583a46, type: 3}

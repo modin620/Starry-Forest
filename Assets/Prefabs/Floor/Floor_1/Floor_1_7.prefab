@@ -303,6 +303,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8431688354371197083}
     m_Modifications:
+    - target: {fileID: -177516927784549339, guid: d8292251234f67445b839535cde8dee4, type: 3}
+      propertyPath: _onMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2263775346832794777, guid: d8292251234f67445b839535cde8dee4, type: 3}
       propertyPath: m_Name
       value: Mushroom
@@ -373,6 +377,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8431688354371197083}
     m_Modifications:
+    - target: {fileID: -177516927784549339, guid: d8292251234f67445b839535cde8dee4, type: 3}
+      propertyPath: _onMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2263775346832794777, guid: d8292251234f67445b839535cde8dee4, type: 3}
       propertyPath: m_Name
       value: Mushroom
@@ -443,6 +451,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8431688354371197083}
     m_Modifications:
+    - target: {fileID: -177516927784549339, guid: d8292251234f67445b839535cde8dee4, type: 3}
+      propertyPath: _onMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2263775346832794777, guid: d8292251234f67445b839535cde8dee4, type: 3}
       propertyPath: m_Name
       value: Mushroom
@@ -513,6 +525,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8431688354371197083}
     m_Modifications:
+    - target: {fileID: -177516927784549339, guid: d8292251234f67445b839535cde8dee4, type: 3}
+      propertyPath: _onMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2263775346832794777, guid: d8292251234f67445b839535cde8dee4, type: 3}
       propertyPath: m_Name
       value: Mushroom
@@ -583,6 +599,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8431688354371197083}
     m_Modifications:
+    - target: {fileID: -177516927784549339, guid: d8292251234f67445b839535cde8dee4, type: 3}
+      propertyPath: _onMove
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2263775346832794777, guid: d8292251234f67445b839535cde8dee4, type: 3}
       propertyPath: m_Name
       value: Mushroom

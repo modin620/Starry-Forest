@@ -14,10 +14,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [SerializeField] AudioClip _endClip;
+
     PlayerController theplayerController;
     UIManager theUIManager;
     FloorManager thefloorManager;
     StageManager theStageManager;
+
+    AudioSource BGMPlayer;
 
     public PlayerController PlayerControllerInstance { get { return theplayerController; } }
     public UIManager UIManagerInstance { get { return theUIManager; } }
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
         theUIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         thefloorManager = GameObject.Find("FloorGroup").GetComponent<FloorManager>();
         theStageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        BGMPlayer = GameObject.Find("BGM").GetComponent<AudioSource>();
 
         theStageManager._preSceneName = sceneNames[SaveValue._nowSceneIndex];
         theStageManager._nextSceneName = sceneNames[SaveValue._nowSceneIndex + 1];
@@ -73,5 +78,25 @@ public class GameManager : MonoBehaviour
     public int LoadMaxHp()
     {
         return SaveValue._maxHp;
+    }
+
+    public void ChangeBGM(string clipname)
+    {
+        switch (clipname)
+        {
+            case "end":
+                BGMPlayer.Stop();
+
+                BGMPlayer.clip = _endClip;
+
+                BGMPlayer.Play();
+                Invoke("IncreaseBGMVolume", 1.5f);
+                break;
+        }
+    }
+
+    void IncreaseBGMVolume()
+    {
+        BGMPlayer.volume = 1.5f;
     }
 }

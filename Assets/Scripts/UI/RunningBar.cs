@@ -10,7 +10,7 @@ public class RunningBar : MonoBehaviour
     [SerializeField] Image _fillImage;
     [SerializeField, Range(1, 7)] int _grade = 7;
     [SerializeField] float[] _speedValues = new float[7];
-    float _runningGague = 145f;
+    float _runningGague;
     bool[] _changedColor = new bool[7];
 
     [Header("Bar Colors")]

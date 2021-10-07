@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3998892007426990085}
   - component: {fileID: 3998892007426990086}
   - component: {fileID: 3998892007426990087}
-  - component: {fileID: 3998892007426990084}
+  - component: {fileID: -7129995512905666345}
   m_Layer: 0
   m_Name: RecoverItem
   m_TagString: Untagged
@@ -100,7 +100,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &3998892007426990084
+--- !u!114 &-7129995512905666345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,8 +109,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3998892007426990088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05c6c19cb109a064890f21603447b9ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a0d52d6bcf39fd48a05783ccc26a8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoverValue: 1
-  _onItem: 0
+  _myType: 2
+  _mushroomScore: 1
+  _potionScore: 1
+  startValue: 0
+  endValue: 5

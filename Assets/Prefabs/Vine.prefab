@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 6225775050589582273}
   - component: {fileID: 6225775050589582272}
   - component: {fileID: 2126890346702569469}
-  - component: {fileID: 4500468889730743805}
-  - component: {fileID: 4802855471893463287}
+  - component: {fileID: 6229313987444399066}
   m_Layer: 0
-  m_Name: Thron_3
+  m_Name: Vine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,36 +98,10 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20324105, y: -0.740955}
-  m_Size: {x: 4.651203, y: 1.8910196}
+  m_Offset: {x: 0.40963858, y: 2.1027942}
+  m_Size: {x: 7.6091604, y: 6.844711}
   m_Direction: 1
---- !u!61 &4500468889730743805
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6225775050589582274}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.03246069, y: 2.8543682}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.8, y: 10.8}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 6.555524, y: 5.0912647}
-  m_EdgeRadius: 0
---- !u!114 &4802855471893463287
+--- !u!114 &6229313987444399066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,13 +110,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6225775050589582274}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da95ee8fb9a324f4e9d6fcaff3f183e9, type: 3}
+  m_Script: {fileID: 11500000, guid: af4dfb71e5e8548428569262fbe31665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDown: 0
-  _damage: 1
+  _myType: 2
+  _thronDamage: 1
+  _vineDamage: 1
+  _onDown: 0
   _downSpeed: 2
-  type: 1
 --- !u!1 &8843988848961031323
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,4 +285,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ad3fd0b26047d448df6f2b7752393b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oc: {fileID: 4802855471893463287}
+  theVine: {fileID: 6229313987444399066}

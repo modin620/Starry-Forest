@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5803627650500695625}
   - component: {fileID: 5803627650500695624}
   - component: {fileID: 1975108216244329077}
-  - component: {fileID: 4921289181639697791}
   - component: {fileID: 5718092836332490612}
+  - component: {fileID: -2942070992238298923}
   m_Layer: 0
   m_Name: Thron_2
   m_TagString: Untagged
@@ -101,22 +101,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1.5, y: 1.5}
   m_Direction: 0
---- !u!114 &4921289181639697791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5803627650500695626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da95ee8fb9a324f4e9d6fcaff3f183e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onDown: 0
-  _damage: 1
-  _downSpeed: 0
-  type: 1
 --- !u!95 &5718092836332490612
 Animator:
   serializedVersion: 3
@@ -136,3 +120,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-2942070992238298923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803627650500695626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08c9e02d594a4d45b13bc7b0d24670c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myType: 1
+  _thronDamage: 1
+  _vineDamage: 1
