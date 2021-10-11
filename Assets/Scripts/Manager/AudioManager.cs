@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] AudioSource[] allAudioChannel;
+
+    public void PauseAllhannels()
     {
-        
+        for (int i = 0; i < allAudioChannel.Length; i++)
+            allAudioChannel[i].Pause();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayAllhannels()
     {
-        
+        for (int i = 0; i < allAudioChannel.Length; i++)
+            allAudioChannel[i].Play();
     }
 }

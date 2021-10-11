@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     UIManager theUIManager;
     FloorManager thefloorManager;
     StageManager theStageManager;
+    AudioManager theAudioManager;
 
     AudioSource BGMPlayer;
 
@@ -27,8 +28,11 @@ public class GameManager : MonoBehaviour
     public UIManager UIManagerInstance { get { return theUIManager; } }
     public FloorManager FloorManagerInstance { get { return thefloorManager; } }
     public StageManager StageManagerInstance { get { return theStageManager; } }
+    public AudioManager AudioManagerInstance { get { return theAudioManager; } }
 
     public string[] sceneNames;
+
+    bool _onOption;
 
     void Awake()
     {
@@ -43,11 +47,31 @@ public class GameManager : MonoBehaviour
         theUIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         thefloorManager = GameObject.Find("FloorGroup").GetComponent<FloorManager>();
         theStageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        theAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         BGMPlayer = GameObject.Find("BGM").GetComponent<AudioSource>();
 
         theStageManager._preSceneName = sceneNames[SaveValue._nowSceneIndex];
         theStageManager._nextSceneName = sceneNames[SaveValue._nowSceneIndex + 1];
     }
+
+    private void Update()
+    {
+        CheckOption();
+    }
+
+    void CheckOption()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_onOption)
+                theUIManager.OffOption();
+            else
+                theUIManager.OnOption();
+
+            _onOption = !_onOption;
+        }
+    }
+
 
     public void SaveTotalScore(int value)
     {
@@ -98,5 +122,17 @@ public class GameManager : MonoBehaviour
     void IncreaseBGMVolume()
     {
         BGMPlayer.volume = 1.5f;
+    }
+
+    public void GameStop()
+    {
+        theAudioManager.PauseAllhannels();
+        Time.timeScale = 0;
+    }
+    
+    public void GameContinue()
+    {
+        theAudioManager.PlayAllhannels();
+        Time.timeScale = 1;
     }
 }

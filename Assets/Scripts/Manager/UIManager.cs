@@ -8,12 +8,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject Dialog;
     [SerializeField] GameObject Result;
     [SerializeField] GameObject Guide;
+    [SerializeField] GameObject Option;
 
     RunningBar _runningBar;
     Heart _heart;
     Score _score;
     Blood _blood;
     Dialog _dialog;
+    Option _option;
 
     public RunningBar runningBarInstance { get { return _runningBar; } }
     public Heart heartInstance { get { return _heart; } }
@@ -29,6 +31,7 @@ public class UIManager : MonoBehaviour
         _blood = GameObject.Find("BloodBox").GetComponent<Blood>();
 
         _dialog = Dialog.GetComponent<Dialog>();
+        _option = Option.GetComponent<Option>();
     }
 
     public void OnDialog()
@@ -43,5 +46,17 @@ public class UIManager : MonoBehaviour
         Dialog.SetActive(false);
 
         Result.SetActive(true);
+    }
+
+    public void OnOption()
+    {
+        Option.SetActive(true);
+        GameManager.instance.GameStop();
+    }
+
+    public void OffOption()
+    {
+        Option.SetActive(false);
+        GameManager.instance.GameContinue();
     }
 }
