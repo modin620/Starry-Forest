@@ -18,14 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float DOWNHILL_VALUE;
 
     [Header("Audio")]
-    [SerializeField] AudioClip _walkClip;
-    [SerializeField] AudioClip _jumpClip;
-    [SerializeField] AudioClip _slidingClip;
-    [SerializeField] AudioClip _itemClip;
-    [SerializeField] AudioClip _thronClip;
-    [SerializeField] AudioClip _recoverClip;
-    [SerializeField] AudioClip _doubleJumpClip;
-    [SerializeField] AudioClip _dandelionClip;
+    AudioManager audioManager;
     [SerializeField] AudioSource audioSourceFirst;
     [SerializeField] AudioSource audioSourceSecond;
 
@@ -60,6 +53,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        audioManager = GameManager.instance.AudioManagerInstance;
+
         SetHp();
     }
 
@@ -94,8 +89,11 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("doJump", false);
             animator.SetBool("doDoubleJump", false);
 
-            if (!audioSourceFirst.isPlaying && !_doSliding)
-                PlayAudio("walk");
+            audioManager.PlayWalkChannel();
+        }
+        else
+        {
+            audioManager.PauseWalkCahnnel();
         }
     }
 
@@ -117,7 +115,7 @@ public class PlayerController : MonoBehaviour
                     Vector2 doubleJumpVec = new Vector2(rigidbody2D.velocity.x, 0.0f);
                     rigidbody2D.velocity = doubleJumpVec;
                     rigidbody2D.AddForce(Vector2.up * _jumpPower / 4, ForceMode2D.Impulse);
-                    PlayAudio("doubleJump");
+                    audioManager.PlaySFX(Definition.DOWNHILL_CLIP);
                     _onDoubleJump = true;
                 }
                 rigidbody2D.gravityScale = DOWNHILL_VALUE;
@@ -143,7 +141,7 @@ public class PlayerController : MonoBehaviour
 
                     rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
                     animator.SetBool("doJump", true);
-                    PlayAudio("jump");
+                    audioManager.PlaySFX(Definition.JUMP_CLIP);
                 }
             }
         }
@@ -163,7 +161,7 @@ public class PlayerController : MonoBehaviour
 
             if (!_doSliding)
             {
-                PlayAudio("sliding");
+                audioManager.PlaySFX(Definition.SLIDING_CLIP);
                 var effectController = _dustEffect.main;
                 effectController.startSize = 0.8f;
             }
@@ -225,53 +223,6 @@ public class PlayerController : MonoBehaviour
             rigidbody2D.gravityScale = FLY_DOWN_VALUE;
     }
 
-    private void PlayAudio(string clipName)
-    {
-        switch (clipName)
-        {
-            case "walk":
-                audioSourceFirst.Stop();
-                audioSourceFirst.clip = _walkClip; 
-                audioSourceFirst.Play(); 
-                break;
-            case "jump":
-                audioSourceFirst.Stop();
-                audioSourceFirst.clip = _jumpClip; 
-                audioSourceFirst.Play(); 
-                break;
-            case "sliding":
-                audioSourceFirst.Stop();
-                audioSourceFirst.clip = _slidingClip; 
-                audioSourceFirst.Play(); 
-                break;
-            case "item":
-                audioSourceSecond.Stop();
-                audioSourceSecond.clip = _itemClip;
-                audioSourceSecond.Play(); 
-                break;
-            case "recover":
-                audioSourceSecond.Stop();
-                audioSourceSecond.clip = _recoverClip;
-                audioSourceSecond.Play();
-                break;
-            case "thorn":
-                audioSourceSecond.Stop();
-                audioSourceSecond.clip = _thronClip; 
-                audioSourceSecond.Play(); 
-                break;
-            case "doubleJump":
-                audioSourceFirst.Stop();
-                audioSourceFirst.clip = _doubleJumpClip;
-                audioSourceFirst.Play();
-                break;
-            case "dandelion":
-                audioSourceSecond.Stop();
-                audioSourceSecond.clip = _dandelionClip;
-                audioSourceSecond.Play();
-                break;
-        }
-    }
-
     private void Dead()
     {
         if (_hp > 0)
@@ -312,7 +263,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Fly")
         {
             _onFly = true;
-            PlayAudio("dandelion");
+            audioManager.PlaySFX(Definition.DANDELION_CLIP);
             Destroy(collision.gameObject);
         }
     }
@@ -326,7 +277,7 @@ public class PlayerController : MonoBehaviour
 
         _hp -= damage;
         GameManager.instance.UIManagerInstance.BloodInstance.PlayBlood();
-        PlayAudio(clipName);
+        audioManager.PlaySFX(clipName);
     }
 
     IEnumerator OnInvincibility()
@@ -342,7 +293,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeItem()
     {
-        PlayAudio("item");
+        audioManager.PlaySFX(Definition.ITEM_CLIP);
         _itemEffect.Play();
     }
 
@@ -354,6 +305,6 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
 
         _recoverEffect.Play();
-        PlayAudio("recover");
+        audioManager.PlaySFX(Definition.RECOVER_CLIP);
     }
 }

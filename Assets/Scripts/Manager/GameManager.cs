@@ -7,7 +7,7 @@ public class SaveValue
     public static int _totalScore = 0;
     public static int _hp = 3;
     public static int _maxHp = 3;
-    public static int _nowSceneIndex;
+    public static int _nowSceneIndex = 0;
 }
 
 public class GameManager : MonoBehaviour
@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     FloorManager thefloorManager;
     StageManager theStageManager;
     AudioManager theAudioManager;
-
-    AudioSource BGMPlayer;
 
     public PlayerController PlayerControllerInstance { get { return theplayerController; } }
     public UIManager UIManagerInstance { get { return theUIManager; } }
@@ -48,10 +46,14 @@ public class GameManager : MonoBehaviour
         thefloorManager = GameObject.Find("FloorGroup").GetComponent<FloorManager>();
         theStageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
         theAudioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        BGMPlayer = GameObject.Find("BGM").GetComponent<AudioSource>();
 
         theStageManager._preSceneName = sceneNames[SaveValue._nowSceneIndex];
         theStageManager._nextSceneName = sceneNames[SaveValue._nowSceneIndex + 1];
+    }
+
+    private void Start()
+    {
+        theAudioManager.PlayBGM(SaveValue._nowSceneIndex);
     }
 
     private void Update()
@@ -104,35 +106,15 @@ public class GameManager : MonoBehaviour
         return SaveValue._maxHp;
     }
 
-    public void ChangeBGM(string clipname)
-    {
-        switch (clipname)
-        {
-            case "end":
-                BGMPlayer.Stop();
-
-                BGMPlayer.clip = _endClip;
-
-                BGMPlayer.Play();
-                Invoke("IncreaseBGMVolume", 1.5f);
-                break;
-        }
-    }
-
-    void IncreaseBGMVolume()
-    {
-        BGMPlayer.volume = 1.5f;
-    }
-
     public void GameStop()
     {
-        theAudioManager.PauseAllhannels();
+        theAudioManager.PauseAllSFXChannel();
         Time.timeScale = 0;
     }
     
     public void GameContinue()
     {
-        theAudioManager.PlayAllhannels();
+        theAudioManager.PlayAllSFXChannel();
         Time.timeScale = 1;
     }
 }

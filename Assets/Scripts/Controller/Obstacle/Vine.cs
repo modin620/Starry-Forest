@@ -37,7 +37,7 @@ public class Vine : ObstacleController
         {
             PlayerController pc = collision.gameObject.GetComponent<PlayerController>();
 
-            pc.Damaged(_info._damage, "thorn");
+            pc.Damaged(_info._damage, Definition.THORN_CLIP);
 
             GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
         }

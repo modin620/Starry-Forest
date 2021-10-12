@@ -4,17 +4,153 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] AudioSource[] allAudioChannel;
+    [Header("BGM")]
+    [SerializeField] AudioSource BGM_Channel;
+    [SerializeField] AudioClip[] BGM;
 
-    public void PauseAllhannels()
+    [Header("SFX")]
+    [SerializeField] AudioSource[] SFX_Channels;
+    [SerializeField] AudioClip _jumpClip;
+    [SerializeField] AudioClip _slidingClip;
+    [SerializeField] AudioClip _itemClip;
+    [SerializeField] AudioClip _thronClip;
+    [SerializeField] AudioClip _recoverClip;
+    [SerializeField] AudioClip _downhillClip;
+    [SerializeField] AudioClip _dandelionClip;
+
+    [Header("Special Channel")]
+    [SerializeField] AudioSource walkChannel;
+    [SerializeField] AudioClip _walkClip;
+
+    const int _endingIndex = 6;
+
+    public void PlayBGM(int stageIndex)
     {
-        for (int i = 0; i < allAudioChannel.Length; i++)
-            allAudioChannel[i].Pause();
+        BGM_Channel.clip = BGM[stageIndex];
+        BGM_Channel.loop = true;
+        
+        switch(stageIndex)
+        {
+            case 0:
+                BGM_Channel.volume = 0.2f;
+                break;
+            case 1:
+                BGM_Channel.volume = 0.2f;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                BGM_Channel.volume = 1f;
+                break;
+        }
+
+        BGM_Channel.Play();
     }
 
-    public void PlayAllhannels()
+    public void PlayEndingBGM()
     {
-        for (int i = 0; i < allAudioChannel.Length; i++)
-            allAudioChannel[i].Play();
+        PlayBGM(_endingIndex);
+    }
+
+    public void PlaySFX(string clipName)
+    {
+        AudioSource tempChannel = null;
+
+        switch (clipName)
+        {
+            case Definition.JUMP_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _jumpClip;
+                tempChannel.volume = Definition.JUMP_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.SLIDING_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _slidingClip;
+                tempChannel.volume = Definition.SLIDING_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.ITEM_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _itemClip;
+                tempChannel.volume = Definition.ITEM_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.THORN_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _thronClip;
+                tempChannel.volume = Definition.THORN_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.RECOVER_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _thronClip;
+                tempChannel.volume = Definition.RECOVER_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.DOWNHILL_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _downhillClip;
+                tempChannel.volume = Definition.DOWNHILL_VOLUME;
+                tempChannel.Play();
+                break;
+            case Definition.DANDELION_CLIP:
+                tempChannel = selectChannel();
+                tempChannel.clip = _dandelionClip;
+                tempChannel.volume = Definition.DANDELION_VOLUME;
+                tempChannel.Play();
+                break;
+        }
+    }
+
+    public void PauseAllSFXChannel()
+    {
+        for (int i = 0; i < SFX_Channels.Length; i++)
+        {
+            SFX_Channels[i].Pause();
+        }
+
+        PauseWalkCahnnel();
+    }
+
+    public void PlayAllSFXChannel()
+    {
+        for (int i = 0; i < SFX_Channels.Length; i++)
+        {
+            SFX_Channels[i].Play();
+        }
+    }
+
+    AudioSource selectChannel()
+    {
+        for (int i = 0; i < SFX_Channels.Length; i++)
+        {
+            if (!SFX_Channels[i].isPlaying)
+            {
+                return SFX_Channels[i];
+            }
+        }
+
+        Debug.Log("can't allocate audio channel");
+        return null;
+    }
+
+    public void PlayWalkChannel()
+    {
+        if (!walkChannel.isPlaying && Time.timeScale != 0)
+        {
+            walkChannel.Play();
+        }
+    }
+
+    public void PauseWalkCahnnel()
+    {
+        walkChannel.Pause();
     }
 }

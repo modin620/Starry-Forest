@@ -42,8 +42,7 @@ public class StageManager : MonoBehaviour
 
     public void Retry()
     {
-        SaveValue(false);
-
+        Time.timeScale = 1;
         SceneManager.LoadScene(_preSceneName);
     }
 
@@ -58,7 +57,6 @@ public class StageManager : MonoBehaviour
         {
             _end = true;
             GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(0);
-            GameManager.instance.ChangeBGM("end");
         }
     }
 
