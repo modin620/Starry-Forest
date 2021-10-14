@@ -14,8 +14,13 @@ public class StageManager : MonoBehaviour
     bool _stop;
     bool _end;
 
-    public bool end { get { return _end; } }
-    public bool stop { get { return _stop; } }
+    public bool end { get { return _end; } set { _end = value; } }
+    public bool stop { get { return _stop; } set { _stop = value; } }
+
+    private void Start()
+    {
+        CheckDeathEvent();
+    }
 
     void SaveValue(bool victory)
     {
@@ -28,8 +33,26 @@ public class StageManager : MonoBehaviour
             GameManager.instance.IncreaseSceneIndex(_index);
     }
 
+    void CheckDeathEvent()
+    {
+        if (GameManager.instance.GetDeathCount() == 1 && GameManager.instance.GetSceneIndex() == 0)
+        {
+            PlayDeathEvent(1);
+        }
+    }
+
+    void PlayDeathEvent(int index)
+    {
+        //stop = true;
+        end = true;
+        GameManager.instance.UIManagerInstance.OnDialog();
+        GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(index);
+    }
+
     public void GameOver()
     {
+        GameManager.instance.IncreaseDeathCount();
+
         SceneManager.LoadScene(_preSceneName);
     }
 
@@ -43,7 +66,14 @@ public class StageManager : MonoBehaviour
     public void Retry()
     {
         Time.timeScale = 1;
+
         SceneManager.LoadScene(_preSceneName);
+    }
+
+    public void Title()
+    {
+        Time.timeScale = 1;
+        CallScene("Title");
     }
 
     void CallScene(string sceneName)

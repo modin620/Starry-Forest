@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum menuType
+{
+    NewGame,
+    Continue,
+    Option,
+    Exit
+}
+
 public class Menu : MonoBehaviour
 {
-    enum menuType
-    {
-        NewGame,
-        Continue,
-        Option,
-        Exit
-    }
     menuType _preType = menuType.NewGame;
     int _preIndex = 0;
     List<menuType> _menuList;

@@ -30,6 +30,9 @@ public class FloorManager : MonoBehaviour
 
     void Move()
     {
+        if (GameManager.instance.StageManagerInstance.end)
+            return;
+
         if (_onLast && _preFloor[_preFloor.Count - 1].gameObject.transform.position.x <= 0)
         {
             GameManager.instance.StageManagerInstance.EndGame();

@@ -7,17 +7,20 @@ using TMPro;
 public class Dialog : MonoBehaviour
 {
     [Header("Dialog")]
-    [SerializeField] private Image _portrait;
-    [SerializeField] private Image _arrow;
-    [SerializeField] private TextMeshProUGUI _name;
-    [SerializeField] private Text _typingText;
-    [SerializeField] private float _typingSpeed;
-    [SerializeField] private AudioClip _messageClip;
-    [SerializeField, TextArea] private string[] _script;
+    [SerializeField] Image _portrait;
+    [SerializeField] Image _arrow;
+    [SerializeField] TextMeshProUGUI _name;
+    [SerializeField] Text _typingText;
+    [SerializeField] float _typingSpeed;
+    [SerializeField] AudioClip _messageClip;
+    [SerializeField, TextArea] string[] _script;
+    [SerializeField] int[] _portraitIndex;
+    [SerializeField] string[] _names;
 
-    bool[] _condition = new bool[10];
+    [SerializeField] bool[] _condition = new bool[10];
     int _nowScriptNumber = 0;
     int _endScriptNumber = 0;
+    bool _onEnd;
 
     AudioSource audioSource;
 
@@ -44,8 +47,15 @@ public class Dialog : MonoBehaviour
     {
         if (_condition[0])
         {
-            PrintScript(0, 2, true, "´ÞÀÌ");
+            PrintScript(0, 2);
+            _onEnd = true;
             _condition[0] = false;
+        }
+
+        if (_condition[1])
+        {
+            PrintScript(3, 5);
+            _condition[1] = false;
         }
     }
 
@@ -56,35 +66,51 @@ public class Dialog : MonoBehaviour
             if (_nowScriptNumber < _endScriptNumber)
             {
                 _nowScriptNumber++;
-                StartCoroutine(TypingText(_script[_nowScriptNumber], _typingSpeed));
+                StartCoroutine(TypingText(_script[_nowScriptNumber], _typingSpeed, _portraitIndex[_nowScriptNumber], _names[_nowScriptNumber]));
+            }
+            else if (_onEnd)
+            {
+                LoadingSceneController.LoadScene("End");
+                //GameManager.instance.UIManagerInstance.OnResult();
             }
             else
             {
-                GameManager.instance.UIManagerInstance.OnResult();
+                ContinueGame();
             }
         }
     }
 
-    private void PrintScript(int start, int end, bool portrait, string name)
+    void ContinueGame()
+    {
+        GameManager.instance.StageManagerInstance.end = false;
+        GameManager.instance.StageManagerInstance.stop = false;
+        GameManager.instance.UIManagerInstance.onHUD();
+    }
+
+    private void PrintScript(int start, int end) // need to change portrait logic
     {
         _nowScriptNumber = start;
         _endScriptNumber = end;
 
         GameManager.instance.UIManagerInstance.OnDialog();
 
-        if (portrait)
-            _portrait.enabled = true;
-        else
-            _portrait.enabled = false;
-
-        _name.text = name;
-
-        StartCoroutine(TypingText(_script[_nowScriptNumber], _typingSpeed));
+        StartCoroutine(TypingText(_script[_nowScriptNumber], _typingSpeed, _portraitIndex[_nowScriptNumber], _names[_nowScriptNumber]));
     }
 
-    IEnumerator TypingText(string message, float speed)
+    IEnumerator TypingText(string message, float speed, int portrait, string name)
     {
         _arrow.enabled = false;
+        _name.text = name;
+
+        switch (portrait)
+        {
+            case 0:
+                _portrait.enabled = true;
+                break;
+            case 1:
+                _portrait.enabled = false;
+                break;
+        }
 
         for (int i = 0; i < message.Length; i++)
         {

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class SaveValue
 {
+    public static int _deathCount = 0;
     public static int _totalScore = 0;
-    public static int _hp = 3;
-    public static int _maxHp = 3;
+    public static int _hp = 5;
+    public static int _maxHp = 5;
     public static int _nowSceneIndex = 0;
 }
 
@@ -59,6 +60,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CheckOption();
+        CheckCursor();
+    }
+
+    void CheckCursor()
+    {
+        if (Cursor.lockState != CursorLockMode.Locked)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 
     void CheckOption()
@@ -74,7 +82,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void SaveTotalScore(int value)
     {
         SaveValue._totalScore = value;
@@ -86,9 +93,24 @@ public class GameManager : MonoBehaviour
         SaveValue._maxHp = maxHp;
     }
 
+    public int GetSceneIndex()
+    {
+        return SaveValue._nowSceneIndex;
+    }
+
     public void IncreaseSceneIndex(int index)
     {
         SaveValue._nowSceneIndex = index;
+    }
+
+    public int GetDeathCount()
+    {
+        return SaveValue._deathCount;
+    }
+
+    public void IncreaseDeathCount()
+    {
+        SaveValue._deathCount++;
     }
 
     public int LoadTotalScore()

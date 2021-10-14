@@ -352,8 +352,6 @@ MonoBehaviour:
   FLY_DOWN_VALUE: 1
   GRAVITY_VALUE: 1.5
   DOWNHILL_VALUE: 0.15
-  audioSourceFirst: {fileID: 0}
-  audioSourceSecond: {fileID: 2084310555724507862}
   _dustEffect: {fileID: 3279409897990514508}
   _itemEffect: {fileID: 1973670760328059271}
   _recoverEffect: {fileID: 3065716037567541034}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Potion : ItemController
 {
     [SerializeField] int startValue = 0;
-    [SerializeField] int endValue = 5;
+    [SerializeField] int endValue = 3;
     bool _onItem;
 
     void Awake()

@@ -90,7 +90,7 @@ public class AudioManager : MonoBehaviour
                 break;
             case Definition.RECOVER_CLIP:
                 tempChannel = selectChannel();
-                tempChannel.clip = _thronClip;
+                tempChannel.clip = _recoverClip;
                 tempChannel.volume = Definition.RECOVER_VOLUME;
                 tempChannel.Play();
                 break;

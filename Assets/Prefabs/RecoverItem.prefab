@@ -116,4 +116,4 @@ MonoBehaviour:
   _mushroomScore: 1
   _potionScore: 1
   startValue: 0
-  endValue: 5
+  endValue: 3

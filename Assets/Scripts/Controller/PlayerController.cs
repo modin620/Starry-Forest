@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Audio")]
     AudioManager audioManager;
-    [SerializeField] AudioSource audioSourceFirst;
-    [SerializeField] AudioSource audioSourceSecond;
 
     [Header("Effect")]
     [SerializeField] ParticleSystem _dustEffect;
@@ -41,7 +39,6 @@ public class PlayerController : MonoBehaviour
     bool _doSliding;
     bool _onFly;
     bool _onInvincibility;
-    bool _onRest;
     bool _onDoubleJump;
 
     private void Awake()
@@ -86,6 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_ground)
         {
+            animator.SetBool("doStanding", false);
             animator.SetBool("doJump", false);
             animator.SetBool("doDoubleJump", false);
 
@@ -233,16 +231,9 @@ public class PlayerController : MonoBehaviour
 
     private void Rest()
     {
-        if (!_onRest)
-        {
-            _onRest = true;
-            audioSourceFirst.Stop();
-            audioSourceSecond.Stop();
-
-            animator.SetBool("doStanding", true);
-            animator.SetBool("doJump", false);
-            animator.SetBool("doSliding", false);
-        }
+        animator.SetBool("doStanding", true);
+        animator.SetBool("doJump", false);
+        animator.SetBool("doSliding", false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

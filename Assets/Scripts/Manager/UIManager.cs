@@ -41,6 +41,13 @@ public class UIManager : MonoBehaviour
         Dialog.SetActive(true);
     }
 
+    public void onHUD()
+    {
+        Dialog.SetActive(false);
+
+        HUD.SetActive(true);
+    }
+
     public void OnResult()
     {
         Dialog.SetActive(false);
