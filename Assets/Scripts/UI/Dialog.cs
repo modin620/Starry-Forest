@@ -51,12 +51,6 @@ public class Dialog : MonoBehaviour
             _onEnd = true;
             _condition[0] = false;
         }
-
-        if (_condition[1])
-        {
-            PrintScript(3, 5);
-            _condition[1] = false;
-        }
     }
 
     private void NextScript()

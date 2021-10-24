@@ -9,6 +9,8 @@ public class FloorManager : MonoBehaviour
     [SerializeField] List<GameObject> _preFloor;
     [SerializeField] GameObject _lastFloor;
     [SerializeField] float _moveSpeed;
+    [SerializeField] float _accelerationValue = 1.5f;
+    float _acceleration = 1f;
     bool _onLast;
 
     RunningBar runningBar;
@@ -43,7 +45,7 @@ public class FloorManager : MonoBehaviour
 
         for (int i = 0; i < _preFloor.Count; i++)
             if (_preFloor[i] != null)
-                _preFloor[i].transform.Translate(moveVec * _moveSpeed * Time.deltaTime);
+                _preFloor[i].transform.Translate(moveVec * _moveSpeed * _acceleration * Time.deltaTime);
     }
 
     void Replace(bool onLast)
@@ -104,5 +106,15 @@ public class FloorManager : MonoBehaviour
     public void SetMoveValue(float value)
     {
         _moveSpeed = value;
+    }
+
+    public void OnAcceleration()
+    {
+        _acceleration = _accelerationValue;
+    }
+
+    public void SetDefaultAcceleration()
+    {
+        _acceleration = 1f;
     }
 }

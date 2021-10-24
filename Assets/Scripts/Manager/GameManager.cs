@@ -6,8 +6,8 @@ public class SaveValue
 {
     public static int _deathCount = 0;
     public static int _totalScore = 0;
-    public static int _hp = 5;
-    public static int _maxHp = 5;
+    public static int _hp = 3;
+    public static int _maxHp = 3;
     public static int _nowSceneIndex = 0;
 }
 

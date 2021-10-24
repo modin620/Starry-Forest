@@ -10,12 +10,14 @@ public class PlayerController : MonoBehaviour
     [Header("Status")]
     public int _hp;
     public int _maxHp;
-    [SerializeField] float _jumpPower;
-    [SerializeField] float _flyTime;
-    [SerializeField] float FLY_UP_VALUE;
-    [SerializeField] float FLY_DOWN_VALUE;
-    [SerializeField] float GRAVITY_VALUE;
-    [SerializeField] float DOWNHILL_VALUE;
+    [SerializeField] float _jumpPower = 7.5f;
+    [SerializeField] float _flyTime = 3f;
+    [SerializeField] float _slidingCooltime = 0.25f;
+    [SerializeField] float FLY_UP_VALUE = -0.75f;
+    [SerializeField] float FLY_DOWN_VALUE = 1f;
+    [SerializeField] float GRAVITY_VALUE = 1.5f;
+    [SerializeField] float DOWNHILL_VALUE = 0.15f;
+    [SerializeField] float _runMotionSpeedValue = 1.5f;
 
     [Header("Audio")]
     AudioManager audioManager;
@@ -34,21 +36,24 @@ public class PlayerController : MonoBehaviour
     float _flyCurrentTime;
 
     bool _ground;
+    bool _onRun;
+    bool _convertedRun;
     bool _onJump;
     bool _onDownhill;
+    bool _onSliding;
     bool _doSliding;
     bool _onFly;
     bool _onInvincibility;
     bool _onDoubleJump;
 
-    private void Awake()
+    void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Start()
+    void Start()
     {
         audioManager = GameManager.instance.AudioManagerInstance;
 
@@ -63,7 +68,7 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
     }
 
-    private void Update()
+    void Update()
     {
         if (GameManager.instance.StageManagerInstance.end)
         {
@@ -72,6 +77,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             Walk();
+            RunToWalk();
             Jump();
             Sliding();
             Fly();
@@ -79,10 +85,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Walk()
+    void Walk()
     {
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _onRun = false;
+        }
+
         if (_ground)
         {
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !_doSliding)
+            {
+                _onRun = true;
+                Run();
+            }
+
             animator.SetBool("doStanding", false);
             animator.SetBool("doJump", false);
             animator.SetBool("doDoubleJump", false);
@@ -92,10 +109,36 @@ public class PlayerController : MonoBehaviour
         else
         {
             audioManager.PauseWalkCahnnel();
+            _onRun = false;
         }
     }
 
-    private void Jump()
+    void Run()
+    {
+        _convertedRun = false;
+
+        GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed();
+        GameManager.instance.FloorManagerInstance.OnAcceleration();
+        audioManager.InceraseWalkChannelPitch();
+        _dustEffect.Play();
+        animator.speed = _runMotionSpeedValue;
+    }
+
+    void RunToWalk()
+    {
+        if (!_onRun && !_convertedRun)
+        {
+            _convertedRun = true;
+
+            GameManager.instance.UIManagerInstance.runningBarInstance.SetDefaultFillSpeed();
+            GameManager.instance.FloorManagerInstance.SetDefaultAcceleration();
+            audioManager.SetDefaultPitch();
+            _dustEffect.Stop();
+            animator.speed = 1f;
+        }
+    }
+
+    void Jump()
     {
         if (_onFly)
             return;
@@ -145,26 +188,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDownhill()
+    void OnDownhill()
     {
         _onDownhill = true;
     }
 
-    private void Sliding()
+    void Sliding()
     {
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            if (!_ground)
+            if (!_ground || _onSliding)
                 return;
+
+            Invoke("PlaySlidingCooltime", _slidingCooltime);
 
             if (!_doSliding)
             {
                 audioManager.PlaySFX(Definition.SLIDING_CLIP);
-                var effectController = _dustEffect.main;
-                effectController.startSize = 0.8f;
+                _dustEffect.Play();
             }
 
             _doSliding = true;
+            _onSliding = true;
             animator.SetBool("doSliding", true);
             _defaultCollider.enabled = false;
             _slidingCollider.enabled = true;
@@ -174,8 +219,8 @@ public class PlayerController : MonoBehaviour
             _doSliding = false;
             animator.SetBool("doSliding", false);
 
-            var effectController = _dustEffect.main;
-            effectController.startSize = 0.0f;
+            if (!_onSliding && !_onRun)
+                _dustEffect.Stop();
 
             if (!_defaultCollider.isActiveAndEnabled)
                 _defaultCollider.enabled = true;
@@ -185,7 +230,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Fly()
+    void PlaySlidingCooltime()
+    {
+        _onSliding = false;
+    }
+
+    void Fly()
     {
         if (!_onFly)
         {
@@ -221,7 +271,7 @@ public class PlayerController : MonoBehaviour
             rigidbody2D.gravityScale = FLY_DOWN_VALUE;
     }
 
-    private void Dead()
+    void Dead()
     {
         if (_hp > 0)
             return;
@@ -229,14 +279,14 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.StageManagerInstance.GameOver();
     }
 
-    private void Rest()
+    void Rest()
     {
         animator.SetBool("doStanding", true);
         animator.SetBool("doJump", false);
         animator.SetBool("doSliding", false);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Platform")
         {
@@ -249,7 +299,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Fly")
         {

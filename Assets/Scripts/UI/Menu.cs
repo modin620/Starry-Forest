@@ -107,8 +107,18 @@ public class Menu : MonoBehaviour
             case menuType.Option:
                 break;
             case menuType.Exit:
+                Exit();
                 break;
         }
+    }
+
+    void Exit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     void MoveBar()

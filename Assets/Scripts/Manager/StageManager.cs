@@ -17,11 +17,6 @@ public class StageManager : MonoBehaviour
     public bool end { get { return _end; } set { _end = value; } }
     public bool stop { get { return _stop; } set { _stop = value; } }
 
-    private void Start()
-    {
-        CheckDeathEvent();
-    }
-
     void SaveValue(bool victory)
     {
         GameManager.instance.SaveTotalScore(GameManager.instance.UIManagerInstance.ScoreInstance.totalScore);
@@ -33,21 +28,20 @@ public class StageManager : MonoBehaviour
             GameManager.instance.IncreaseSceneIndex(_index);
     }
 
-    void CheckDeathEvent()
+    /*void CheckDeathEvent()
     {
         if (GameManager.instance.GetDeathCount() == 1 && GameManager.instance.GetSceneIndex() == 0)
         {
             PlayDeathEvent(1);
         }
-    }
+    }*/
 
-    void PlayDeathEvent(int index)
+    /*void PlayDeathEvent(int index)
     {
-        //stop = true;
         end = true;
         GameManager.instance.UIManagerInstance.OnDialog();
         GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(index);
-    }
+    }*/
 
     public void GameOver()
     {

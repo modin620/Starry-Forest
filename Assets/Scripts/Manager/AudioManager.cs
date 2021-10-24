@@ -22,17 +22,19 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource walkChannel;
     [SerializeField] AudioClip _walkClip;
 
+    [SerializeField] float _walkPitchValue = 1.5f;
+
     const int _endingIndex = 6;
 
     public void PlayBGM(int stageIndex)
     {
         BGM_Channel.clip = BGM[stageIndex];
         BGM_Channel.loop = true;
-        
-        switch(stageIndex)
+
+        switch (stageIndex)
         {
             case 0:
-                BGM_Channel.volume = 0.2f;
+                BGM_Channel.volume = 0.15f;
                 break;
             case 1:
                 BGM_Channel.volume = 0.2f;
@@ -152,5 +154,16 @@ public class AudioManager : MonoBehaviour
     public void PauseWalkCahnnel()
     {
         walkChannel.Pause();
+    }
+
+    public void InceraseWalkChannelPitch()
+    {
+        walkChannel.pitch = _walkPitchValue;
+    }
+
+    public void SetDefaultPitch()
+    {
+        walkChannel.pitch = 1f;
+
     }
 }
