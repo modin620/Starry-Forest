@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float FLY_DOWN_VALUE = 1f;
     [SerializeField] float GRAVITY_VALUE = 1.5f;
     [SerializeField] float DOWNHILL_VALUE = 0.15f;
-    [SerializeField] float _runMotionSpeedValue = 1.5f;
+    [SerializeField] float _runMotionSpeedValue = 1.75f;
 
     [Header("Audio")]
     AudioManager audioManager;
@@ -33,7 +33,14 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     SpriteRenderer spriteRenderer;
 
+    [Header("Dash Effect")]
     float _flyCurrentTime;
+    float _changeDashPreTime;
+    [SerializeField] ParticleSystem _dashEffect;
+    [SerializeField] float _changeDashTime;
+    [SerializeField] Color _targetColor;
+    Color _defaultColor = Color.white;
+    IEnumerator _dashCorutine;
 
     bool _ground;
     bool _onRun;
@@ -45,6 +52,7 @@ public class PlayerController : MonoBehaviour
     bool _onFly;
     bool _onInvincibility;
     bool _onDoubleJump;
+    bool _changedDashEffecfColor;
 
     void Awake()
     {
@@ -100,7 +108,7 @@ public class PlayerController : MonoBehaviour
                 Run();
             }
 
-            animator.SetBool("doStanding", false);
+            animator.SetBool("onStanding", false);
             animator.SetBool("doJump", false);
             animator.SetBool("doDoubleJump", false);
 
@@ -113,29 +121,80 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
     void Run()
     {
         _convertedRun = false;
 
-        GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed();
-        GameManager.instance.FloorManagerInstance.OnAcceleration();
+        animator.SetBool("onDash", true);
+
+        _dashEffect.Play();
+
+        _dashCorutine = ChangeDashColor();
+        StartCoroutine(_dashCorutine);
+
+        audioManager.PlaySFX(Definition.DASH_CLIP);
+
+        GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(Acceleration.AccelerationLevel.One);
+        GameManager.instance.FloorManagerInstance.OnAcceleration(Acceleration.AccelerationLevel.One);
         audioManager.InceraseWalkChannelPitch();
-        _dustEffect.Play();
         animator.speed = _runMotionSpeedValue;
     }
 
+    [System.Obsolete]
     void RunToWalk()
     {
         if (!_onRun && !_convertedRun)
         {
             _convertedRun = true;
 
+            animator.SetBool("onDash", false);
+
+            ClearDashColor();
+
+            _dashEffect.Stop();
+
             GameManager.instance.UIManagerInstance.runningBarInstance.SetDefaultFillSpeed();
             GameManager.instance.FloorManagerInstance.SetDefaultAcceleration();
             audioManager.SetDefaultPitch();
-            _dustEffect.Stop();
             animator.speed = 1f;
         }
+    }
+
+    [System.Obsolete]
+    IEnumerator ChangeDashColor()
+    {
+        while (!_changedDashEffecfColor)
+        {
+            _changeDashPreTime += Time.deltaTime;
+
+            if (_changeDashPreTime >= _changeDashTime)
+            {
+                _changedDashEffecfColor = true;
+                _dashEffect.startColor = _targetColor;
+                audioManager.PlaySFX(Definition.DOUBLE_DASH_CLIP);
+
+                GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(Acceleration.AccelerationLevel.Two);
+                GameManager.instance.FloorManagerInstance.OnAcceleration(Acceleration.AccelerationLevel.Two);
+            }
+
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    [System.Obsolete]
+    void ClearDashColor()
+    {
+        if (_dashCorutine != null)
+            StopCoroutine(_dashCorutine);
+
+        _dashEffect.startColor = _defaultColor;
+
+        _changedDashEffecfColor = false;
+
+        _changeDashPreTime = 0f;
     }
 
     void Jump()
@@ -242,14 +301,14 @@ public class PlayerController : MonoBehaviour
             if (_flyCurrentTime != 0) 
                 _flyCurrentTime = 0;
 
-            animator.SetBool("doFly", false);
+            animator.SetBool("onFly", false);
             if (_dandelionEffect.isPlaying)
                 _dandelionEffect.Stop();
 
             return;
         }
 
-        animator.SetBool("doFly", true);
+        animator.SetBool("onFly", true);
         if (!_dandelionEffect.isPlaying)
             _dandelionEffect.Play();
 
@@ -281,7 +340,7 @@ public class PlayerController : MonoBehaviour
 
     void Rest()
     {
-        animator.SetBool("doStanding", true);
+        animator.SetBool("onStanding", true);
         animator.SetBool("doJump", false);
         animator.SetBool("doSliding", false);
     }

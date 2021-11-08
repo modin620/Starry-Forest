@@ -9,7 +9,8 @@ public class FloorManager : MonoBehaviour
     [SerializeField] List<GameObject> _preFloor;
     [SerializeField] GameObject _lastFloor;
     [SerializeField] float _moveSpeed;
-    [SerializeField] float _accelerationValue = 1.5f;
+    [SerializeField] float _accelerationValue = 1.25f;
+    [SerializeField] float _doubleAccelerationValue = 1.5f;
     float _acceleration = 1f;
     bool _onLast;
 
@@ -108,9 +109,17 @@ public class FloorManager : MonoBehaviour
         _moveSpeed = value;
     }
 
-    public void OnAcceleration()
+    public void OnAcceleration(Acceleration.AccelerationLevel level)
     {
-        _acceleration = _accelerationValue;
+        switch (level)
+        {
+            case Acceleration.AccelerationLevel.One:
+                _acceleration = _accelerationValue;
+                break;
+            case Acceleration.AccelerationLevel.Two:
+                _acceleration = _doubleAccelerationValue;
+                break;
+        }
     }
 
     public void SetDefaultAcceleration()

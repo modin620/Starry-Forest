@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
 
     public void OnDialog()
     {
-        HUD.SetActive(false);
+        Result.SetActive(false);
 
         Dialog.SetActive(true);
     }
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
 
     public void OnResult()
     {
-        Dialog.SetActive(false);
+        HUD.SetActive(false);
 
         Result.SetActive(true);
     }

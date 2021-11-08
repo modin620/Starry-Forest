@@ -80,8 +80,15 @@ public class StageManager : MonoBehaviour
         if (!_end)
         {
             _end = true;
-            GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(0);
+
+            GameManager.instance.UIManagerInstance.OnResult();
         }
+    }
+
+    public void StartDialog()
+    {
+        GameManager.instance.UIManagerInstance.OnDialog();
+        GameManager.instance.UIManagerInstance.DialogInstance.SetCondition(0);
     }
 
     public void StopGame()

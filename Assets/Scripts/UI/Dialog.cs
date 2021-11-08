@@ -65,7 +65,7 @@ public class Dialog : MonoBehaviour
             else if (_onEnd)
             {
                 LoadingSceneController.LoadScene("End");
-                //GameManager.instance.UIManagerInstance.OnResult();
+                GameManager.instance.UIManagerInstance.OnResult();
             }
             else
             {
@@ -85,8 +85,6 @@ public class Dialog : MonoBehaviour
     {
         _nowScriptNumber = start;
         _endScriptNumber = end;
-
-        GameManager.instance.UIManagerInstance.OnDialog();
 
         StartCoroutine(TypingText(_script[_nowScriptNumber], _typingSpeed, _portraitIndex[_nowScriptNumber], _names[_nowScriptNumber]));
     }
