@@ -6,12 +6,13 @@ namespace Acceleration
 { 
     public enum AccelerationLevel
     {
+        None,
         One,
-        Two
+        Two,
+        Three,
+        Max
     }
 }
-
-
 public class Definition : MonoBehaviour
 {
     public const string WALK_CLIP = "walk";
@@ -35,4 +36,17 @@ public class Definition : MonoBehaviour
     public const float DANDELION_VOLUME = 0.4f;
     public const float DASH_VOLUME = 0.6f;
     public const float DOUBLE_DASH_VOLUME = 0.6f;
+
+    public const string ANIM_STANDING = "onStand";
+    public const string ANIM_JUMP = "doJump";
+    public const string ANIM_SLIDE = "doSlide";
+    public const string ANIM_DOWNHILL = "doDownhill";
+    public const string ANIM_FLY = "onFly";
+    public const string ANIM_DASH = "onDash";
+
+    public const string VFX_DUST = "dust";
+    public const string VFX_TAKE_ITEM = "takeItem";
+    public const string VFX_RECOVER = "recover";
+    public const string VFX_DANDELION = "dandelion";
+    public const string VFX_DASH = "dash";
 }

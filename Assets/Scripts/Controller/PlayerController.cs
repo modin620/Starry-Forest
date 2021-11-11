@@ -3,61 +3,64 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Core")]
-    [SerializeField] CapsuleCollider2D _defaultCollider;
-    [SerializeField] BoxCollider2D _slidingCollider;
+    //[Header("Core")]
+    //[SerializeField] CapsuleCollider2D _defaultCollider;
+    //[SerializeField] BoxCollider2D _slidingCollider;
 
     [Header("Status")]
     public int _hp;
     public int _maxHp;
-    [SerializeField] float _jumpPower = 7.5f;
-    [SerializeField] float _flyTime = 3f;
-    [SerializeField] float _slidingCooltime = 0.25f;
-    [SerializeField] float FLY_UP_VALUE = -0.75f;
-    [SerializeField] float FLY_DOWN_VALUE = 1f;
-    [SerializeField] float GRAVITY_VALUE = 1.5f;
-    [SerializeField] float DOWNHILL_VALUE = 0.15f;
-    [SerializeField] float _runMotionSpeedValue = 1.75f;
+    //[SerializeField] float _jumpPower = 7.5f;
+    //[SerializeField] float _flyTime = 3f;
+    //[SerializeField] float _slidingCooltime = 0.25f;
+    //[SerializeField] float FLY_UP_VALUE = -0.75f;
+    //[SerializeField] float FLY_DOWN_VALUE = 1f;
+    //[SerializeField] float GRAVITY_VALUE = 1.5f;
+    //[SerializeField] float DOWNHILL_VALUE = 0.15f;
+    //[SerializeField] float _runMotionSpeedValue = 1.75f;
 
-    [Header("Audio")]
+
+    //[Header("Effect")]
+    //[SerializeField] ParticleSystem _dustEffect;
+    //[SerializeField] ParticleSystem _itemEffect;
+    //[SerializeField] ParticleSystem _recoverEffect;
+    //[SerializeField] ParticleSystem _dandelionEffect;
+    //[SerializeField] SpriteRenderer _dandelionBuds;
+
+    //Rigidbody2D rigidbody2D;
+    //Animator animator;
+
+    //[Header("Dash Effect")]
+    //float _flyCurrentTime;
+    //float _changeDashPreTime;
+    //[SerializeField] ParticleSystem _dashEffect;
+    //[SerializeField] float _changeDashTime;
+    //[SerializeField] Color[] _dashEffectColor;
+    //Acceleration.AccelerationLevel _dashGrade;
+    //IEnumerator _dashCorutine;
+
+    //bool _ground;
+    //bool _onDash;
+    //bool _convertedDash;
+    //bool _onJump;
+    //bool _onDownhill;
+    //bool _onSliding;
+    //bool _doSliding;
+    //bool _onFly;
+    //bool _onDoubleJump;
+    //bool _changedDashEffecfColor;
+
+    bool _onInvincibility;
+
+
+    SpriteRenderer spriteRenderer;
     AudioManager audioManager;
 
-    [Header("Effect")]
-    [SerializeField] ParticleSystem _dustEffect;
-    [SerializeField] ParticleSystem _itemEffect;
-    [SerializeField] ParticleSystem _recoverEffect;
-    [SerializeField] ParticleSystem _dandelionEffect;
-    [SerializeField] SpriteRenderer _dandelionBuds;
-
-    Rigidbody2D rigidbody2D;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-
-    [Header("Dash Effect")]
-    float _flyCurrentTime;
-    float _changeDashPreTime;
-    [SerializeField] ParticleSystem _dashEffect;
-    [SerializeField] float _changeDashTime;
-    [SerializeField] Color _targetColor;
-    Color _defaultColor = Color.white;
-    IEnumerator _dashCorutine;
-
-    bool _ground;
-    bool _onRun;
-    bool _convertedRun;
-    bool _onJump;
-    bool _onDownhill;
-    bool _onSliding;
-    bool _doSliding;
-    bool _onFly;
-    bool _onInvincibility;
-    bool _onDoubleJump;
-    bool _changedDashEffecfColor;
 
     void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        ////rigidbody2D = GetComponent<Rigidbody2D>();
+        ////animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -80,255 +83,229 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.instance.StageManagerInstance.end)
         {
-            Rest();
+            //Rest();
         }
         else
         {
-            Walk();
-            RunToWalk();
-            Jump();
-            Sliding();
-            Fly();
-            Dead();
+            //Walk();
+            //DashToWalk();
+            //Jump();
+            //Sliding();
+            //Fly();
+            //Dead();
         }
     }
 
-    void Walk()
-    {
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            _onRun = false;
-        }
+    //void Walk()
+    //{
+    //    if (Input.GetKeyUp(KeyCode.LeftShift))
+    //    {
+    //        _onDash = false;
+    //    }
 
-        if (_ground)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !_doSliding)
-            {
-                _onRun = true;
-                Run();
-            }
+    //    if (_ground)
+    //    {
+    //        animator.SetBool("onStanding", false);
+    //        animator.SetBool("doJump", false);
+    //        animator.SetBool("doDoubleJump", false);
 
-            animator.SetBool("onStanding", false);
-            animator.SetBool("doJump", false);
-            animator.SetBool("doDoubleJump", false);
-
-            audioManager.PlayWalkChannel();
-        }
-        else
-        {
-            audioManager.PauseWalkCahnnel();
-            _onRun = false;
-        }
-    }
+    //        audioManager.PlayWalkChannel();
+    //    }
+    //    else
+    //    {
+    //        audioManager.PauseWalkCahnnel();
+    //        _onDash = false;
+    //    }
+    //}
 
     [System.Obsolete]
-    void Run()
-    {
-        _convertedRun = false;
+    //void Dash()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.LeftShift) && !_doSliding)
+    //    {
+    //        _onDash = true;
+    //        _convertedDash = false;
 
-        animator.SetBool("onDash", true);
+    //        animator.SetBool("onDash", true);
 
-        _dashEffect.Play();
+    //        _dashEffect.Play();
 
-        _dashCorutine = ChangeDashColor();
-        StartCoroutine(_dashCorutine);
+    //        _dashCorutine = ChangeDashGrade();
+    //        StartCoroutine(_dashCorutine);
 
-        audioManager.PlaySFX(Definition.DASH_CLIP);
+    //        audioManager.PlaySFX(Definition.DASH_CLIP);
 
-        GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(Acceleration.AccelerationLevel.One);
-        GameManager.instance.FloorManagerInstance.OnAcceleration(Acceleration.AccelerationLevel.One);
-        audioManager.InceraseWalkChannelPitch();
-        animator.speed = _runMotionSpeedValue;
-    }
+    //        _dashGrade = Acceleration.AccelerationLevel.One;
 
-    [System.Obsolete]
-    void RunToWalk()
-    {
-        if (!_onRun && !_convertedRun)
-        {
-            _convertedRun = true;
+    //        GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(_dashGrade);
+    //        GameManager.instance.FloorManagerInstance.OnAcceleration(_dashGrade);
+    //        audioManager.InceraseWalkChannelPitch();
+    //        animator.speed = _runMotionSpeedValue;
+    //    }
+    //}
 
-            animator.SetBool("onDash", false);
+    ////[System.Obsolete]
+    ////void DashToWalk()
+    ////{
+    ////    if (!_convertedDash)
+    ////    {
+    ////        _convertedDash = true;
 
-            ClearDashColor();
+    ////        animator.SetBool("onDash", false);
 
-            _dashEffect.Stop();
+    ////        ClearDashColor();
 
-            GameManager.instance.UIManagerInstance.runningBarInstance.SetDefaultFillSpeed();
-            GameManager.instance.FloorManagerInstance.SetDefaultAcceleration();
-            audioManager.SetDefaultPitch();
-            animator.speed = 1f;
-        }
-    }
+    ////        _dashEffect.Stop();
 
-    [System.Obsolete]
-    IEnumerator ChangeDashColor()
-    {
-        while (!_changedDashEffecfColor)
-        {
-            _changeDashPreTime += Time.deltaTime;
+    ////        _dashGrade = Acceleration.AccelerationLevel.None;
 
-            if (_changeDashPreTime >= _changeDashTime)
-            {
-                _changedDashEffecfColor = true;
-                _dashEffect.startColor = _targetColor;
-                audioManager.PlaySFX(Definition.DOUBLE_DASH_CLIP);
+    ////        GameManager.instance.UIManagerInstance.runningBarInstance.SetDefaultFillSpeed();
+    ////        GameManager.instance.FloorManagerInstance.SetDefaultAcceleration();
+    ////        audioManager.SetDefaultPitch();
+    ////        animator.speed = 1f;
+    ////    }
+    ////}
 
-                GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(Acceleration.AccelerationLevel.Two);
-                GameManager.instance.FloorManagerInstance.OnAcceleration(Acceleration.AccelerationLevel.Two);
-            }
+    ////[System.Obsolete]
+    ////IEnumerator ChangeDashGrade()
+    ////{
+    ////    while (!_changedDashEffecfColor)
+    ////    {
+    ////        _changeDashPreTime += Time.deltaTime;
 
-            yield return null;
-        }
+    ////        if (_changeDashPreTime >= _changeDashTime)
+    ////        {
+    ////            if (_dashGrade < Acceleration.AccelerationLevel.Max)
+    ////                _dashGrade++;
 
-        yield return null;
-    }
+    ////            _changedDashEffecfColor = true;
+    ////            _dashEffect.startColor = _dashEffectColor[(int)_dashGrade - 1];
+    ////            audioManager.PlaySFX(Definition.DOUBLE_DASH_CLIP);
 
-    [System.Obsolete]
-    void ClearDashColor()
-    {
-        if (_dashCorutine != null)
-            StopCoroutine(_dashCorutine);
+    ////            GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(_dashGrade);
+    ////            GameManager.instance.FloorManagerInstance.OnAcceleration(_dashGrade);
+    ////        }
 
-        _dashEffect.startColor = _defaultColor;
+    ////        yield return null;
+    ////    }
 
-        _changedDashEffecfColor = false;
+    ////    yield return null;
+    ////}
 
-        _changeDashPreTime = 0f;
-    }
+    ////[System.Obsolete]
+    ////void ClearDashColor()
+    ////{
+    ////    if (_dashCorutine != null)
+    ////        StopCoroutine(_dashCorutine);
 
-    void Jump()
-    {
-        if (_onFly)
-            return;
+    ////    _dashEffect.startColor = _dashEffectColor[(int)_dashGrade];
 
-        RaycastHit2D hit;
-        Vector2 rayVector = new Vector2 (transform.position.x - 0.5f, transform.position.y);
-        hit = Physics2D.Raycast(rayVector, Vector2.down, 2.0f, LayerMask.GetMask("Platform"));
+    ////    _changedDashEffecfColor = false;
 
-        if (Input.GetButton("Jump"))
-        {
-            if (_onDownhill  && !_ground)
-            {
-                if (!_onDoubleJump)
-                {
-                    Vector2 doubleJumpVec = new Vector2(rigidbody2D.velocity.x, 0.0f);
-                    rigidbody2D.velocity = doubleJumpVec;
-                    rigidbody2D.AddForce(Vector2.up * _jumpPower / 4, ForceMode2D.Impulse);
-                    audioManager.PlaySFX(Definition.DOWNHILL_CLIP);
-                    _onDoubleJump = true;
-                }
-                rigidbody2D.gravityScale = DOWNHILL_VALUE;
-                animator.SetBool("doDoubleJump", true);
-            }
-        }
+    ////    _changeDashPreTime = 0f;
+    ////}
 
-        if (Input.GetButtonUp("Jump"))
-            rigidbody2D.gravityScale = GRAVITY_VALUE;
+    ////void Jump()
+    ////{
+    ////    if (_onFly)
+    ////        return;
 
-        if (hit.collider != null)
-        {
-            if (hit.collider.tag == "Platform")
-            {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    if (_doSliding || _onJump)
-                        return;
+    ////    RaycastHit2D hit;
+    ////    Vector2 rayVector = new Vector2 (transform.position.x - 0.5f, transform.position.y);
+    ////    hit = Physics2D.Raycast(rayVector, Vector2.down, 2.0f, LayerMask.GetMask("Platform"));
 
-                    _ground = false;
-                    _onJump = true;
-                    Invoke("OnDownhill", 0.5f);
+    ////    if (Input.GetButton("Jump"))
+    ////    {
+    ////        if (_onDownhill  && !_ground)
+    ////        {
+    ////            if (!_onDoubleJump)
+    ////            {
+    ////                Vector2 doubleJumpVec = new Vector2(rigidbody2D.velocity.x, 0.0f);
+    ////                rigidbody2D.velocity = doubleJumpVec;
+    ////                rigidbody2D.AddForce(Vector2.up * _jumpPower / 4, ForceMode2D.Impulse);
+    ////                audioManager.PlaySFX(Definition.DOWNHILL_CLIP);
+    ////                _onDoubleJump = true;
+    ////            }
+    ////            rigidbody2D.gravityScale = DOWNHILL_VALUE;
+    ////            animator.SetBool("doDoubleJump", true);
+    ////        }
+    ////    }
 
-                    rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
-                    animator.SetBool("doJump", true);
-                    audioManager.PlaySFX(Definition.JUMP_CLIP);
-                }
-            }
-        }
-    }
+    ////    if (Input.GetButtonUp("Jump"))
+    ////        rigidbody2D.gravityScale = GRAVITY_VALUE;
 
-    void OnDownhill()
-    {
-        _onDownhill = true;
-    }
+    ////    if (hit.collider != null)
+    ////    {
+    ////        if (hit.collider.tag == "Platform")
+    ////        {
+    ////            if (Input.GetButtonDown("Jump"))
+    ////            {
+    ////                if (_doSliding || _onJump)
+    ////                    return;
 
-    void Sliding()
-    {
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            if (!_ground || _onSliding)
-                return;
+    ////                _ground = false;
+    ////                _onJump = true;
+    ////                Invoke("OnDownhill", 0.5f);
 
-            Invoke("PlaySlidingCooltime", _slidingCooltime);
+    ////                rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+    ////                animator.SetBool("doJump", true);
+    ////                audioManager.PlaySFX(Definition.JUMP_CLIP);
+    ////            }
+    ////        }
+    ////    }
+    ////}
 
-            if (!_doSliding)
-            {
-                audioManager.PlaySFX(Definition.SLIDING_CLIP);
-                _dustEffect.Play();
-            }
+    ////void OnDownhill()
+    ////{
+    ////    _onDownhill = true;
+    ////}
 
-            _doSliding = true;
-            _onSliding = true;
-            animator.SetBool("doSliding", true);
-            _defaultCollider.enabled = false;
-            _slidingCollider.enabled = true;
-        }
-        else
-        {
-            _doSliding = false;
-            animator.SetBool("doSliding", false);
+    ////void Sliding()
+    ////{
+    ////    if (Input.GetKey(KeyCode.LeftControl))
+    ////    {
+    ////        if (!_ground || _onSliding)
+    ////            return;
 
-            if (!_onSliding && !_onRun)
-                _dustEffect.Stop();
+    ////        Invoke("PlaySlidingCooltime", _slidingCooltime);
 
-            if (!_defaultCollider.isActiveAndEnabled)
-                _defaultCollider.enabled = true;
+    ////        if (!_doSliding)
+    ////        {
+    ////            audioManager.PlaySFX(Definition.SLIDING_CLIP);
+    ////            _dustEffect.Play();
+    ////        }
 
-            if (_slidingCollider.isActiveAndEnabled)
-                _slidingCollider.enabled = false;
-        }
-    }
+    ////        _doSliding = true;
+    ////        _onSliding = true;
+    ////        animator.SetBool("doSliding", true);
+    ////        _defaultCollider.enabled = false;
+    ////        _slidingCollider.enabled = true;
+    ////    }
+    ////    else
+    ////    {
+    ////        _doSliding = false;
+    ////        animator.SetBool("doSliding", false);
 
-    void PlaySlidingCooltime()
-    {
-        _onSliding = false;
-    }
+    ////        if (!_onSliding && !_onDash)
+    ////            _dustEffect.Stop();
 
-    void Fly()
-    {
-        if (!_onFly)
-        {
-            if (_flyCurrentTime != 0) 
-                _flyCurrentTime = 0;
+    ////        if (!_defaultCollider.isActiveAndEnabled)
+    ////            _defaultCollider.enabled = true;
 
-            animator.SetBool("onFly", false);
-            if (_dandelionEffect.isPlaying)
-                _dandelionEffect.Stop();
+    ////        if (_slidingCollider.isActiveAndEnabled)
+    ////            _slidingCollider.enabled = false;
+    ////    }
+    ////}
 
-            return;
-        }
+    ////void PlaySlidingCooltime()
+    ////{
+    ////    _onSliding = false;
+    ////}
 
-        animator.SetBool("onFly", true);
-        if (!_dandelionEffect.isPlaying)
-            _dandelionEffect.Play();
+    ////void Fly()
+    ////{
 
-        _flyCurrentTime += Time.deltaTime;
-        _dandelionBuds.color = new Color(1, 1, 1, 1 - _flyCurrentTime / _flyTime);
-
-        if (_flyCurrentTime >= _flyTime)
-        {
-            _onFly = false;
-            rigidbody2D.gravityScale = FLY_DOWN_VALUE;
-            return;
-        }
-
-        if (Input.GetButton("Jump"))
-        {
-            rigidbody2D.gravityScale = FLY_UP_VALUE;
-        }
-        else
-            rigidbody2D.gravityScale = FLY_DOWN_VALUE;
-    }
+    ////}
 
     void Dead()
     {
@@ -340,29 +317,29 @@ public class PlayerController : MonoBehaviour
 
     void Rest()
     {
-        animator.SetBool("onStanding", true);
-        animator.SetBool("doJump", false);
-        animator.SetBool("doSliding", false);
+        //animator.SetBool("onStanding", true);
+        //animator.SetBool("doJump", false);
+        //animator.SetBool("doSliding", false);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Platform")
-        {
-            rigidbody2D.gravityScale = GRAVITY_VALUE;
-            _ground = true;
-            _onJump = false;
-            _onDownhill = false;
-            _onDoubleJump = false;
-            _onFly = false;
-        }
-    }
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Platform")
+    //    {
+    //        rigidbody2D.gravityScale = GRAVITY_VALUE;
+    //        _ground = true;
+    //        _onJump = false;
+    //        _onDownhill = false;
+    //        _onDoubleJump = false;
+    //        _onFly = false;
+    //    }
+    //}
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Fly")
         {
-            _onFly = true;
+            //_onFly = true;
             audioManager.PlaySFX(Definition.DANDELION_CLIP);
             Destroy(collision.gameObject);
         }
@@ -394,7 +371,7 @@ public class PlayerController : MonoBehaviour
     public void TakeItem()
     {
         audioManager.PlaySFX(Definition.ITEM_CLIP);
-        _itemEffect.Play();
+        //_itemEffect.Play();
     }
 
     public void Recover(int recoverValue)
@@ -404,7 +381,7 @@ public class PlayerController : MonoBehaviour
 
         GameManager.instance.UIManagerInstance.heartInstance.CheckHeart();
 
-        _recoverEffect.Play();
+        //_recoverEffect.Play();
         audioManager.PlaySFX(Definition.RECOVER_CLIP);
     }
 }

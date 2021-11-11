@@ -11,8 +11,7 @@ public class RunningBar : MonoBehaviour
     [SerializeField, Range(1, 7)] int _grade = 7;
     [SerializeField] float[] _speedValues = new float[7];
     [SerializeField] float _runningGague;
-    [SerializeField] float _fillSpeedValue = 1.5f;
-    [SerializeField] float _doubleFillSpeedValue = 1.8f;
+    [SerializeField] float[] _fillSpeedValue;
     float _fillSpeed = 1f;
     bool[] _changedColor = new bool[7];
     bool _runinng;
@@ -81,14 +80,22 @@ public class RunningBar : MonoBehaviour
     {
         switch (level)
         {
+            case Acceleration.AccelerationLevel.None:
+                SetDefaultFillSpeed();
+                break;
             case Acceleration.AccelerationLevel.One:
-                _fillSpeed = _fillSpeedValue;
+                _fillSpeed = _fillSpeedValue[0];
                 break;
             case Acceleration.AccelerationLevel.Two:
-                _fillSpeed = _doubleFillSpeedValue;
+                _fillSpeed = _fillSpeedValue[1];
+                break;
+            case Acceleration.AccelerationLevel.Three:
+                _fillSpeed = _fillSpeedValue[2];
+                break;
+            case Acceleration.AccelerationLevel.Max:
+                _fillSpeed = _fillSpeedValue[3];
                 break;
         }
-
     }
 
     public void SetDefaultFillSpeed()

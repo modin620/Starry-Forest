@@ -143,7 +143,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: doDoubleJump
+    m_ConditionEvent: doDownhill
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6110797169736620018}
@@ -168,7 +168,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6090659888566296528}
@@ -288,7 +288,7 @@ AnimatorStateTransition:
     m_ConditionEvent: onDash
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8058143552104999739}
@@ -347,19 +347,19 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: doSliding
+  - m_Name: doSlide
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: onStanding
+  - m_Name: onStand
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: doDoubleJump
+  - m_Name: doDownhill
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -499,10 +499,10 @@ AnimatorStateTransition:
     m_ConditionEvent: doJump
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: onStanding
+    m_ConditionEvent: onStand
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6090659888566296528}
@@ -555,7 +555,7 @@ AnimatorStateTransition:
     m_ConditionEvent: doJump
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -335905065395971044}
@@ -663,7 +663,7 @@ AnimatorStateTransition:
     m_ConditionEvent: doJump
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -335905065395971044}
@@ -718,10 +718,10 @@ AnimatorStateTransition:
     m_ConditionEvent: doJump
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: doSliding
+    m_ConditionEvent: doSlide
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: onStanding
+    m_ConditionEvent: onStand
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -893772633627282346}
