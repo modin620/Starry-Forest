@@ -116,10 +116,10 @@ public class AudioManager : MonoBehaviour
                 tempChannel.volume = Definition.DASH_VOLUME;
                 tempChannel.Play();
                 break;
-            case Definition.DOUBLE_DASH_CLIP:
+            case Definition.DASH_LEVEL_UP_CLIP:
                 tempChannel = selectChannel();
                 tempChannel.clip = _doubleDashClip;
-                tempChannel.volume = Definition.DOUBLE_DASH_VOLUME;
+                tempChannel.volume = Definition.DASH_LEVEL_UP_VOLUME;
                 tempChannel.Play();
                 break;
         }

@@ -60,4 +60,39 @@ public class PlayerVFX : MonoBehaviour
     {
         _dashEffect.startColor = targetColor;
     }
+
+    public bool isPlaying(string clipName)
+    {
+        switch (clipName)
+        {
+            case Definition.VFX_DUST:
+                if (_dashEffect.isPlaying)
+                    return true;
+                else
+                    return false;
+            case Definition.VFX_TAKE_ITEM:
+                if (_takeItemEffect.isPlaying)
+                    return true;
+                else
+                    return false;
+            case Definition.VFX_RECOVER:
+                if (_recoverEffect.isPlaying)
+                    return true;
+                else
+                    return false;
+            case Definition.VFX_DANDELION:
+                if (_dandelionEffect.isPlaying)
+                    return true;
+                else
+                    return false;
+            case Definition.VFX_DASH:
+                if (_dashEffect.isPlaying)
+                    return true;
+                else
+                    return false;
+        }
+
+        Debug.Log("name is fault");
+        return false;
+    }
 }

@@ -271,11 +271,13 @@ public class PlayerMovement : MonoBehaviour
     [System.Obsolete]
     void Movement_Dash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetMouseButtonDown(0))
         {
             _onDash = true;
 
             playerVFX.PlayVFX(Definition.VFX_DASH);
+            audioManager.PlaySFX(Definition.DASH_CLIP);
+            playerAnim.PlayAnimationClip(Definition.ANIM_DASH, true);
 
             _dashCorutine = ChangeDashGrade();
 
@@ -286,14 +288,16 @@ public class PlayerMovement : MonoBehaviour
     [System.Obsolete]
     IEnumerator ChangeDashGrade()
     {
+        _dashLevel = Acceleration.AccelerationLevel.One;
+
         GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(_dashLevel);
         GameManager.instance.FloorManagerInstance.OnAcceleration(_dashLevel);
-        playerVFX.ChangeDashEffectColor(_dashColors[(int)_dashLevel]);
+        playerVFX.ChangeDashEffectColor(_dashColors[(int)_dashLevel - 1]);
         playerVFX.PlayVFX(Definition.VFX_DASH);
 
         while (_onDash)
         {
-            if (Input.GetKeyUp(KeyCode.LeftShift))
+            if (Input.GetMouseButtonUp(0))
             {
                 _onDash = false;
 
@@ -301,9 +305,11 @@ public class PlayerMovement : MonoBehaviour
 
                 _dashLevel = Acceleration.AccelerationLevel.None;
 
-                playerVFX.ChangeDashEffectColor(_dashColors[(int)_dashLevel]);
+                GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(_dashLevel);
+                GameManager.instance.FloorManagerInstance.OnAcceleration(_dashLevel);
 
                 playerVFX.StopVFX(Definition.VFX_DASH);
+                playerAnim.PlayAnimationClip(Definition.ANIM_DASH, false);
 
                 if (_dashCorutine != null)
                     StopCoroutine(_dashCorutine);
@@ -313,14 +319,27 @@ public class PlayerMovement : MonoBehaviour
 
             _dashCurrentTime += Time.deltaTime;
 
-            if (_dashCurrentTime >= _dashChangingTime[(int)_dashLevel])
+            if (_onSliding || _onJump)
             {
-                if (_dashLevel < Acceleration.AccelerationLevel.Max)
-                    _dashLevel++;
+                playerVFX.StopVFX(Definition.VFX_DASH);
+            }
+            else
+            {
+                if (!playerVFX.isPlaying(Definition.VFX_DASH))
+                {
+                    playerVFX.PlayVFX(Definition.VFX_DASH);
+                }
+            }
+
+            if (_dashLevel < Acceleration.AccelerationLevel.Max && _dashCurrentTime >= _dashChangingTime[(int)_dashLevel - 1])
+            {
+                _dashLevel++;
 
                 GameManager.instance.UIManagerInstance.runningBarInstance.IncreaseFillSpeed(_dashLevel);
                 GameManager.instance.FloorManagerInstance.OnAcceleration(_dashLevel);
-                playerVFX.ChangeDashEffectColor(_dashColors[(int)_dashLevel]);
+
+                audioManager.PlaySFX(Definition.DASH_LEVEL_UP_CLIP);
+                playerVFX.ChangeDashEffectColor(_dashColors[(int)_dashLevel - 1]);
             }
 
             yield return null;
@@ -411,6 +430,16 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform"))
         {
             _onGround = true;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Fly")
+        {
+            //_onFly = true;
+            audioManager.PlaySFX(Definition.DANDELION_CLIP);
+            Destroy(collision.gameObject);
         }
     }
 }

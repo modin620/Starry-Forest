@@ -117,7 +117,7 @@ MonoBehaviour:
   _thronDamage: 1
   _vineDamage: 1
   _onDown: 0
-  _downSpeed: 2
+  _downSpeed: 3
 --- !u!1 &8843988848961031323
 GameObject:
   m_ObjectHideFlags: 0

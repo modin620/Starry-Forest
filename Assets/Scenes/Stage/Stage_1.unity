@@ -130,6 +130,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: LightsModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 236865977, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: InitialModule.startLifetime.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 995324183450959552, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -184,11 +224,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[0].a
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[0].b
@@ -208,11 +248,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[1].b
-      value: 1
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[1].g
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[1].r
@@ -224,11 +264,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[2].b
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[2].g
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[2].r
@@ -240,15 +280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[3].b
-      value: 0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[3].g
-      value: 0.5
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[3].r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashColors.Array.data[4].a
@@ -268,23 +308,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashChangingTime.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashChangingTime.Array.data[0]
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
-      propertyPath: _dashChangingTime.Array.data[1]
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: _dashChangingTime.Array.data[1]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashChangingTime.Array.data[2]
-      value: 5
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
       propertyPath: _dashChangingTime.Array.data[3]
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485701302952676108, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
+      propertyPath: _dashChangingTime.Array.data[4]
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f14efdc1ef3743e4185144dc53caa2c7, type: 3}
@@ -8727,9 +8771,9 @@ MonoBehaviour:
   _moveSpeed: 4.6
   _accelerationValue:
   - 1.1
-  - 1.5
-  - 1.6
+  - 1.25
   - 1.8
+  - 2
 --- !u!1 &5594428097596922726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8955196382120809447, guid: feca3c59ce985384386cfdeec80f2820, type: 3}
@@ -8937,10 +8981,10 @@ MonoBehaviour:
   - 6
   _runningGague: 0
   _fillSpeedValue:
-  - 1.1
-  - 1.2
+  - 1.25
   - 1.5
-  - 1.9
+  - 2
+  - 2.25
   _nextColors:
   - serializedVersion: 2
     rgba: 4278200281
