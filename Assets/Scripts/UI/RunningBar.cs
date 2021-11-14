@@ -11,6 +11,7 @@ public class RunningBar : MonoBehaviour
     [SerializeField, Range(1, 7)] int _grade = 7;
     [SerializeField] float[] _speedValues = new float[7];
     [SerializeField] float _runningGague;
+    [SerializeField] float _runningGagueMaxValue;
     [SerializeField] float[] _fillSpeedValue;
     float _fillSpeed = 1f;
     bool[] _changedColor = new bool[7];
@@ -18,6 +19,11 @@ public class RunningBar : MonoBehaviour
 
     [Header("Bar Colors")]
     [SerializeField] Color32[] _nextColors = new Color32[7];
+
+    void Awake()
+    {
+        _runningBar.maxValue = _runningGagueMaxValue;
+    }
 
     void Update()
     {

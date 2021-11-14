@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     Score _score;
     Blood _blood;
     Dialog _dialog;
+    Result _result;
     Option _option;
 
     public RunningBar runningBarInstance { get { return _runningBar; } }
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
     public Score ScoreInstance { get { return _score; } }
     public Blood BloodInstance { get { return _blood; } }
     public Dialog DialogInstance { get { return _dialog; } }
+    public Result ResultInstance { get { return _result; } }
 
     private void Awake()
     {
@@ -31,6 +33,7 @@ public class UIManager : MonoBehaviour
         _blood = GameObject.Find("BloodBox").GetComponent<Blood>();
 
         _dialog = Dialog.GetComponent<Dialog>();
+        _result = Result.GetComponent<Result>();
         _option = Option.GetComponent<Option>();
     }
 
@@ -53,6 +56,8 @@ public class UIManager : MonoBehaviour
         HUD.SetActive(false);
 
         Result.SetActive(true);
+
+        _result.SetResult();
     }
 
     public void OnOption()

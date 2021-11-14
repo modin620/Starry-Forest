@@ -11,11 +11,26 @@ public class StageManager : MonoBehaviour
     public string _preSceneName;
     public string _nextSceneName;
 
+    float _clearTime;
+
     bool _stop;
     bool _end;
 
+    public float clearTime { get { return _clearTime; } }
+
     public bool end { get { return _end; } set { _end = value; } }
     public bool stop { get { return _stop; } set { _stop = value; } }
+
+    void Update()
+    {
+        AddClearTime();
+    }
+
+    void AddClearTime()
+    {
+        if (!_end)
+            _clearTime += Time.deltaTime;
+    }
 
     void SaveValue(bool victory)
     {

@@ -10,6 +10,7 @@ public class FloorManager : MonoBehaviour
     [SerializeField] GameObject _lastFloor;
     [SerializeField] float _moveSpeed;
     [SerializeField] float[] _accelerationValue;
+    Vector3 _reposVec = new Vector3(106.5f, 0f, 0f);
     float _acceleration = 1f;
     bool _onLast;
 
@@ -62,36 +63,36 @@ public class FloorManager : MonoBehaviour
                     if (onLast)
                     {
                         _onLast = true;
+                        CreateFloor(_preFloor[i].transform.position += _reposVec, true);
                         Destroy(_preFloor[i].gameObject);
                         _preFloor.RemoveAt(i);
-                        CreateFloor(true);
                     }
                     else
                     {
+                        CreateFloor(_preFloor[i].transform.position += _reposVec, false);
                         Destroy(_preFloor[i].gameObject);
                         _preFloor.RemoveAt(i);
-                        CreateFloor(false);
                     }
                 }
     }
 
-    void CreateFloor(bool onLast)
+    void CreateFloor(Vector2 _createPos, bool onLast)
     {
-        const float REPOSITION_VALUE = 35.5f;
-        Vector2 createPoint = new Vector2(REPOSITION_VALUE, transform.position.y);
+        //const float REPOSITION_VALUE = 35.5f;
+        //Vector2 createPoint = new Vector2(REPOSITION_VALUE, transform.position.y);
 
         if (onLast)
         {
             GameObject lastFloor = Instantiate(_lastFloor, transform);
             _preFloor.Add(lastFloor);
-            lastFloor.transform.position = createPoint;
+            lastFloor.transform.position = _createPos;
         }
         else
         {
             int floorIndex = Random.Range(0, _floorPrefabs.Length);
             GameObject newFloor = Instantiate(_floorPrefabs[floorIndex], transform);
             _preFloor.Add(newFloor);
-            newFloor.transform.position = createPoint;
+            newFloor.transform.position = _createPos;
         }
     }
 
